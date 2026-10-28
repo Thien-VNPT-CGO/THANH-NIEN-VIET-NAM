@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#B31217">
+  <title>Chi đoàn số 6.0 — Xã Tân Hòa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="vendor/leaflet.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app"></div>
+  <div id="toast"></div>
+  <div id="modal-root"></div>
+
+  <!-- Thư viện đọc QR từ camera (tự động bỏ qua nếu không tải được) -->
+  <script src="vendor/jsqr.min.js"></script>
+
+  <!-- Thư viện tạo QR tự lưu trữ (MIT, qrcode-generator) — không gửi dữ liệu ra ngoài -->
+  <script src="vendor/qrcode.js"></script>
+
+  <!-- Thư viện bản đồ Leaflet tự lưu trữ (BSD-2-Clause), tile OSM tải trực tuyến -->
+  <script src="vendor/leaflet.js"></script>
+
+  <!-- Chế độ xem trước cục bộ (khi chưa triển khai Google Apps Script) -->
+  <script src="mock-api.js"></script>
+
+  <script src="js/core.js"></script>
+  <script src="js/views.js"></script>
+  <script src="js/views2.js"></script>
+  <script src="js/system.js"></script>
+  <script src="js/actions.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+# Phụ thuộc & môi trường
+node_modules/
+test-results/
+npm-debug.log*
+.env
+
+# Hệ điều hành / trình soạn thảo
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Tệp tạm khi chụp màn hình / xem trước
+web/_preview.html
+web/_probe.html
+
+# Google Apps Script
+.clasp.json
