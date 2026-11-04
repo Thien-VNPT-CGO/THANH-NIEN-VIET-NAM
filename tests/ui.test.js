@@ -5,7 +5,7 @@ const { JSDOM, VirtualConsole } = require('jsdom');
 
 const ROOT = path.resolve(__dirname, '..');
 const DB_KEY = 'cd6_db_v3';
-const files = ['web/vendor/qrcode.js', 'web/mock-api.js', 'web/js/core.js', 'web/js/views.js', 'web/js/views2.js', 'web/js/system.js', 'web/js/actions.js'];
+const files = ['web/vendor/qrcode.js', 'web/mock-api.js', 'web/js/core.js', 'web/js/views.js', 'web/js/views2.js', 'web/js/system.js', 'web/js/actions.js', 'web/js/tour.js'];
 const css = fs.readFileSync(path.join(ROOT, 'web/styles.css'), 'utf8');
 
 function buildHtml() {

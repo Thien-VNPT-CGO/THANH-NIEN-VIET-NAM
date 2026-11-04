@@ -398,9 +398,14 @@ var ACTIONS = {
   demo: function (el) {
     var f = document.querySelector('form[data-form="login"]');
     if (!f) return;
-    f.maDD.value = el.dataset.ma;
-    f.pin.value = el.dataset.pass || '123456';
-    f.pin.focus();
+    // Ghi nhớ tài khoản trải nghiệm để sau khi đăng nhập tự mở hướng dẫn.
+    try { sessionStorage.setItem('cd6_demo_tour', el.dataset.ma); } catch (err) { /* bỏ qua */ }
+    var ma = f.querySelector('[name="maDD"]');
+    var pin = f.querySelector('[name="pin"]');
+    if (ma) ma.value = el.dataset.ma;
+    if (pin) pin.value = el.dataset.pass || '123456';
+    toast('Đã chọn tài khoản trải nghiệm ' + el.dataset.ma + '. Nhấn "Đăng nhập" để bắt đầu hướng dẫn.', 'ok');
+    if (pin && typeof pin.focus === 'function') pin.focus();
   },
 
   nav: function (el) { go(el.dataset.view); },

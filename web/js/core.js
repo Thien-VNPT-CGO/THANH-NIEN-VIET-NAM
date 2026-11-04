@@ -367,6 +367,7 @@ function doLogout() {
     S.token = '';
     S.me = null;
     localStorage.removeItem('cd6_token');
+    try { sessionStorage.removeItem('cd6_demo_tour'); } catch (e) { /* bỏ qua */ }
     closeModal();
     renderLogin();
   };
@@ -611,6 +612,7 @@ function topbar() {
         '<span>' + (admin ? 'Quản trị hệ thống · Cấp 0' : 'Đổi mới tập hợp Đoàn viên · Năm ' + esc(S.config.nam)) + '</span></div>' +
       '</div>' +
       '<div class="top-actions">' +
+        (typeof demoAccountHasTour === 'function' && demoAccountHasTour() ? '<button class="icon-btn" data-act="start-tour" title="Xem lại hướng dẫn sử dụng">' + icon('bulb', 18) + '</button>' : '') +
         (admin ? '' : '<button class="icon-btn" data-act="change-pin" title="Đổi mã PIN">' + icon('shield', 18) + '</button>') +
         '<button class="icon-btn" data-act="logout" title="Đăng xuất">' + icon('logout', 18) + '</button>' +
       '</div>' +
@@ -637,6 +639,26 @@ function renderApp() {
     '<main class="screen" id="screen"></main>' + bottomnav() + '</div>';
   go(S.view || 'home');
   startConfigWatch();
+  maybeStartDemoTour();
+}
+
+/**
+ * Nếu nhân viên vừa chọn một tài khoản trải nghiệm ở màn hình đăng nhập
+ * (và đã đăng nhập thành công) thì tự động mở hướng dẫn từng bước.
+ * Cờ được lưu trong sessionStorage để vẫn hoạt động khi đăng nhập
+ * vượt qua bước bắt buộc đổi PIN / mật khẩu.
+ */
+function maybeStartDemoTour() {
+  if (typeof startDemoTour !== 'function') return;
+  var ma = '';
+  try { ma = sessionStorage.getItem('cd6_demo_tour') || ''; } catch (e) { return; }
+  if (!ma) return;
+  // Cờ chỉ dùng một lần: xóa ngay để không kích hoạt nhầm về sau.
+  try { sessionStorage.removeItem('cd6_demo_tour'); } catch (e) { /* bỏ qua */ }
+  if (!S.me || String(S.me.maDD) !== String(ma)) return;
+  setTimeout(function () {
+    if (S.token && S.me && typeof startDemoTour === 'function') startDemoTour(S.me);
+  }, 800);
 }
 
 function go(view) {

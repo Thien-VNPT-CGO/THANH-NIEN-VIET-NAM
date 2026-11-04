@@ -96,14 +96,14 @@ html = html.replace(/[ \t]*<!--[^>]*-->\s*<script src="mock-api\.js"><\/script>/
 html = html.replace(/[ \t]*<script src="mock-api\.js"><\/script>\r?\n?/, '');
 
 // 4. Gộp toàn bộ JS ứng dụng
-const files = ['js/core.js', 'js/views.js', 'js/views2.js', 'js/system.js', 'js/actions.js'];
+const files = ['js/core.js', 'js/views.js', 'js/views2.js', 'js/system.js', 'js/actions.js', 'js/tour.js'];
 const bundle = files.map((f) => {
   const code = read(path.join(webDir, f));
   return '\n/* ================= ' + f + ' ================= */\n' + code;
 }).join('\n');
 
 html = html.replace(
-  /<script src="js\/core\.js"><\/script>[\s\S]*?<script src="js\/actions\.js"><\/script>/,
+  /<script src="js\/core\.js"><\/script>[\s\S]*?<script src="js\/tour\.js"><\/script>/,
   () => '<script>\n' + bundle + '\n</script>'
 );
 

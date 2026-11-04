@@ -668,10 +668,51 @@ table.tb td b { font-weight: 650; }
   .sys-search .input { flex-basis: 100%; }
 }
 
+/* ---------------------------------------------------------------- */
+/* HƯỚNG DẪN TRẢI NGHIỆM (DEMO TOUR)                                */
+/* ---------------------------------------------------------------- */
+
+.tour-root { position: fixed; inset: 0; z-index: 200; pointer-events: none; }
+.tour-spot {
+  position: fixed; display: none; border-radius: 14px;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, .92), 0 0 0 9999px rgba(15, 23, 42, .64);
+  transition: top .22s ease, left .22s ease, width .22s ease, height .22s ease;
+  pointer-events: none;
+}
+.tour-tip {
+  position: fixed; z-index: 201; pointer-events: auto;
+  width: min(340px, calc(100vw - 24px));
+  background: #fff; border-radius: 16px; padding: 14px;
+  box-shadow: var(--shadow-lg); border: 1px solid var(--line);
+  animation: tourPop .24s cubic-bezier(.2, .9, .3, 1) both;
+}
+@keyframes tourPop { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }
+.tour-tip.tour-tip-center {
+  top: 50%; left: 50%; translate: -50% -50%;
+  width: min(360px, calc(100vw - 32px));
+}
+.tour-tip-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.tour-step { font-size: 11px; font-weight: 800; letter-spacing: .05em; color: var(--red); text-transform: uppercase; }
+.tour-x { border: 0; background: var(--grey-soft); width: 26px; height: 26px; border-radius: 8px; cursor: pointer; color: var(--ink-2); display: grid; place-items: center; }
+.tour-title { font-size: 15px; margin-bottom: 6px; }
+.tour-body { font-size: 12.5px; line-height: 1.6; color: var(--ink-2); }
+.tour-body b { color: var(--ink); }
+.tour-meta { margin-top: 10px; }
+.tour-count { font-size: 11px; color: var(--muted); }
+.tour-count b { color: var(--red); font-size: 13px; }
+.tour-bar { height: 5px; background: var(--grey-soft); border-radius: 999px; overflow: hidden; margin-top: 6px; }
+.tour-bar > i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, var(--gold), var(--red-2)); transition: width .1s linear; }
+.tour-actions { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+.tour-btn { border: 0; border-radius: 10px; padding: 8px 12px; font-size: 12px; font-weight: 700; cursor: pointer; }
+.tour-btn.ghost { background: var(--grey-soft); color: var(--ink-2); }
+.tour-btn.primary { background: var(--red); color: #fff; }
+.tour-btn.primary:active, .tour-btn.ghost:active { transform: scale(.97); }
+.tour-btn:disabled { opacity: .45; cursor: default; }
+
 /* In ấn */
 @media print {
   body { background: #fff; }
-  .topbar, .bottomnav, .no-print, #toast { display: none !important; }
+  .topbar, .bottomnav, .no-print, #toast, #tour-root { display: none !important; }
   .screen { padding: 0; }
   .card { box-shadow: none; border: 0; }
   .e-card { box-shadow: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }

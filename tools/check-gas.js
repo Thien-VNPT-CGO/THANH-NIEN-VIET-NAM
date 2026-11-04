@@ -203,10 +203,10 @@ try {
     if (/mock-api\.js/.test(bundle)) bad('Bundle còn sót mock-api.js');
     else ok('Đã loại bỏ mock-api.js');
 
-    const markers = ['core.js', 'views.js', 'views2.js', 'system.js', 'actions.js'];
+    const markers = ['core.js', 'views.js', 'views2.js', 'system.js', 'actions.js', 'tour.js'];
     const missing = markers.filter(function (f) { return bundle.indexOf(f) < 0; });
     if (missing.length) bad('Bundle thiếu mã nguồn', missing.join('\n'));
-    else ok('Đủ 5 tệp JS ứng dụng');
+    else ok('Đủ 6 tệp JS ứng dụng');
 
     if (!/<style>/i.test(bundle)) bad('Bundle chưa nhúng CSS inline');
     else ok('CSS đã nhúng inline');
