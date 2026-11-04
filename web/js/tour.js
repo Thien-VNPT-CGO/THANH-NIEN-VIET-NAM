@@ -16,31 +16,36 @@ function tourDelay(ms) {
 /* KỊCH BẢN HƯỚNG DẪN THEO CẤP TÀI KHOẢN                             */
 /* ------------------------------------------------------------------ */
 
-/** Sinh kịch bản hướng dẫn chung cho một cấp tài khoản (1–4). */
+/** Sinh kịch bản hướng dẫn chung cho một cấp tài khoản (0–4). */
 function buildTourForCap(cap, roleName, maDD) {
   var steps = [];
+  // Đích ưu tiên: khối số liệu, nếu không có thì thẻ nội dung đầu tiên (bỏ khung xương).
+  var MAIN = '#screen .kpi-grid, #screen .card:not(.sk-card)';
 
-  steps.push({
+  function push(step) { steps.push(step); }
+
+  push({
+    tag: 'Bắt đầu',
     title: 'Xin chào ' + roleName + '!',
     html: 'Bạn đang dùng <b>tài khoản trải nghiệm ' + esc(maDD) + '</b>. Hệ thống sẽ tự động hướng dẫn từng bước và chuyển tiếp sau <b>8 giây</b>. ' +
       'Bạn có thể bấm <b>Tiếp</b> / <b>Trước</b>, hoặc <b>Bỏ qua</b> bất cứ lúc nào.'
   });
 
   if (cap === 0) {
-    steps.push({
-      view: 'system', target: '.sys-head',
+    push({
+      tag: 'Hệ thống', view: 'system', target: '.sys-head',
       title: 'Trung tâm điều hành Cấp 0',
-      body: 'Khu vực quản trị toàn hệ thống: theo dõi đơn vị, tài khoản và nhật ký thao tác. Nút bên phải dùng để đổi mật khẩu quản trị.'
+      body: 'Đây là màn hình chính của quản trị viên. Bên phải có nút đổi mật khẩu quản trị.'
     });
-    steps.push({
-      view: 'system', target: '#screen .kpi-grid',
+    push({
+      tag: 'Hệ thống', view: 'system', target: '#screen .kpi-grid',
       title: 'Chỉ số toàn hệ thống',
-      body: 'Bốn thẻ số liệu tóm tắt số Chi đoàn Ấp, số đoàn viên, số tài khoản và số bản ghi nhật ký.'
+      body: 'Bốn thẻ số liệu tóm tắt: số Chi đoàn Ấp, số đoàn viên, số tài khoản và số bản ghi nhật ký.'
     });
-    steps.push({
-      view: 'system', target: '.sys-tabs',
+    push({
+      tag: 'Hệ thống', view: 'system', target: '.sys-tabs',
       title: '8 nhóm chức năng quản trị',
-      body: 'Toàn bộ nghiệp vụ được chia thành 8 tab: Đơn vị, Cấu hình, Tài khoản, Báo cáo, Nhắc việc, Sao lưu, Sức khỏe và Nhật ký.'
+      body: 'Toàn bộ nghiệp vụ được chia thành 8 tab. Hướng dẫn sẽ lần lượt mở và giải thích từng tab.'
     });
     [
       ['donVi', 'Quản lý Đơn vị', 'Thêm/sửa Chi đoàn Ấp, chỉ tiêu đoàn viên và gán Bí thư phụ trách.'],
@@ -52,109 +57,153 @@ function buildTourForCap(cap, roleName, maDD) {
       ['sucKhoe', 'Sức khỏe hệ thống', 'Kiểm tra kết nối máy chủ, dữ liệu và cảnh báo bất thường.'],
       ['nhatKy', 'Nhật ký thao tác', 'Tra cứu mọi thao tác trên hệ thống theo người dùng và thời gian.']
     ].forEach(function (t) {
-      steps.push({
+      push({
+        tag: 'Hệ thống',
         target: '.sys-tab[data-tab="' + t[0] + '"]',
-        title: t[1],
+        title: 'Tab: ' + t[1],
         body: t[2],
         before: function () { S.data.sysTab = t[0]; go('system'); }
       });
     });
-    steps.push({
-      view: 'home', target: '.quick-grid',
-      title: 'Tổng quan điều hành',
-      body: 'Bảng điều khiển chung và các lối tắt nghiệp vụ toàn hệ thống.'
+    push({
+      tag: 'Tổng quan', view: 'home', target: '.quick-grid',
+      title: 'Bảng điều khiển chung',
+      body: 'Lối tắt tới các nghiệp vụ toàn hệ thống dành cho quản trị viên.'
     });
   } else {
-    steps.push({
-      view: 'home', target: '.hero-card',
-      title: 'Tổng quan của bạn',
-      body: 'Thẻ đầu trang hiển thị lời chào, chức vụ và tiến độ điểm rèn luyện so với mục tiêu năm.'
+    push({
+      tag: 'Tổng quan', view: 'home', target: '.hero-card',
+      title: 'Thẻ tổng quan của bạn',
+      body: 'Hiển thị lời chào, chức vụ và tiến độ điểm rèn luyện so với mục tiêu năm.'
     });
-    steps.push({
-      view: 'home', target: '#screen .kpi-grid',
-      title: 'Chỉ số điều hành',
+    push({
+      tag: 'Tổng quan', view: 'home', target: '#screen .kpi-grid',
+      title: 'Các chỉ số chính',
       body: cap <= 2
-        ? 'Các chỉ số tổng hợp toàn Xã: đoàn viên, điểm rèn luyện, đoàn phí và mức độ tập hợp.'
+        ? 'Chỉ số tổng hợp toàn Xã: đoàn viên, điểm rèn luyện, đoàn phí và mức độ tập hợp.'
         : cap === 3
           ? 'Chỉ số của Chi đoàn Ấp bạn phụ trách: số đoàn viên, điểm trung bình và tỷ lệ chuyên cần.'
-          : 'Các chỉ số cá nhân: điểm rèn luyện, chuyên cần, đoàn phí và tiến độ Ươm mầm Đỏ.'
+          : 'Chỉ số cá nhân: điểm rèn luyện, chuyên cần, đoàn phí và tiến độ Ươm mầm Đỏ.'
     });
     if (cap <= 3) {
-      steps.push({
-        view: 'home', target: '.quick-grid',
+      push({
+        tag: 'Tổng quan', view: 'home', target: '.quick-grid',
         title: 'Truy cập nhanh',
-        body: 'Lối tắt tới những nghiệp vụ bạn dùng nhiều nhất, chỉ với một lần chạm.'
+        body: 'Các lối tắt tới nghiệp vụ bạn dùng nhiều nhất, chỉ với một lần chạm.'
       });
     }
   }
 
-  steps.push({
-    view: 'attendance', target: '#screen .card',
+  push({
+    tag: 'Điểm danh', view: 'attendance', target: MAIN,
     title: 'Điểm danh QR động',
     body: cap <= 3
-      ? 'Mở phiên điểm danh mới và chiếu mã QR tự đổi token mỗi 60 giây để chống gian lận. Bạn cũng xem được lịch sử và rà soát chuyên cần.'
-      : 'Quét mã QR từ màn hình Bí thư Chi đoàn Ấp. Chọn hình thức Họp trực tiếp / Hybrid / Zalo để nhận mức điểm tương ứng.'
+      ? 'Mở phiên điểm danh và chiếu mã QR tự đổi token mỗi 60 giây để chống gian lận. Phía dưới là lịch sử phiên và rà soát chuyên cần.'
+      : 'Quét mã QR hiển thị trên màn hình Bí thư Chi đoàn Ấp. Chọn hình thức Họp trực tiếp / Hybrid / Zalo để nhận mức điểm tương ứng.'
+  });
+  push({
+    tag: 'Điểm danh', view: 'attendance',
+    target: cap <= 3
+      ? function () { return document.querySelector('[data-act="new-session"]') || document.querySelector('[data-act="close-session"]') || document.querySelector('#screen .card:not(.sk-card)'); }
+      : '[data-act="start-cam"]',
+    title: cap <= 3 ? 'Nút mở / kết thúc phiên' : 'Nút bật camera quét QR',
+    body: cap <= 3
+      ? 'Bấm nút này để mở phiên điểm danh mới (hoặc kết thúc phiên đang mở).'
+      : 'Bấm để bật camera và đưa mã QR vào khung. Có thể nhập mã token thủ công nếu camera không dùng được.'
   });
 
-  steps.push({
-    view: 'uommam', target: '#screen .kpi-grid',
+  push({
+    tag: 'Ươm mầm Đỏ', view: 'uommam', target: '#screen .kpi-grid',
     title: 'Ươm mầm Đỏ',
     body: cap <= 2
-      ? 'Theo dõi và phê duyệt hồ sơ đoàn viên ưu tú vào nguồn Cảm tình Đảng của Đảng bộ Xã.'
+      ? 'Theo dõi 3 tiêu chuẩn và phê duyệt hồ sơ đoàn viên ưu tú vào nguồn Cảm tình Đảng của Đảng bộ Xã.'
       : cap === 3
         ? 'Đề cử đoàn viên hội đủ 3 tiêu chuẩn vào nguồn phát triển Đảng.'
-        : 'Xem lộ trình của bạn: có Thẻ Đoàn viên, đủ điểm rèn luyện và hoàn thành tự đánh giá 360°.'
+        : 'Xem lộ trình của bạn: đã có Thẻ Đoàn viên, đủ điểm rèn luyện và hoàn thành tự đánh giá 360° chưa.'
   });
 
-  steps.push({
-    view: 'fee', target: '#screen .card',
+  push({
+    tag: 'Đoàn phí', view: 'fee', target: MAIN,
     title: 'Đoàn phí số VietQR',
     body: cap === 4
       ? 'Tạo mã VietQR cá nhân hóa để đóng đoàn phí. Hoàn thành đoàn phí được cộng điểm và gắn huy hiệu trên Thẻ Đoàn viên.'
-      : 'Theo dõi thu - chi, xác nhận giao dịch đang chờ và công khai Sổ quỹ minh bạch 100% cho đoàn viên.'
+      : 'Theo dõi tổng thu - chi - tồn quỹ, xác nhận giao dịch đang chờ và công khai Sổ quỹ minh bạch 100%.'
   });
 
-  steps.push({
-    view: 'card', target: '.e-card',
+  push({
+    tag: 'Thẻ Đoàn viên', view: 'card', target: '.e-card',
     title: 'Thẻ Đoàn viên điện tử',
     body: cap === 4
-      ? 'Thẻ số tích hợp QR định danh, huy hiệu và chữ ký số. Dùng các nút bên dưới để tự đánh giá 360°, cấp E-Cert và in / lưu PDF.'
+      ? 'Thẻ số tích hợp QR định danh, huy hiệu và chữ ký số, kèm đầy đủ thông tin đoàn viên.'
       : 'Tra cứu và tích hợp Thẻ Đoàn viên cho đoàn viên trong phạm vi quản lý (+20 điểm cho mỗi thẻ).'
   });
-
-  steps.push({
-    view: 'sos', target: '#sos-map',
-    title: 'Bản đồ tình nguyện & SOS',
-    body: cap === 4
-      ? 'Gửi phản ánh hiện trường kèm tọa độ GPS để nhận điểm Dân vận khéo, và check-in các nhiệm vụ tình nguyện trên bản đồ.'
-      : 'Duyệt phản ánh thành nhiệm vụ tình nguyện và theo dõi lượt check-in GPS của đoàn viên trên bản đồ.'
-  });
-
-  steps.push({
-    view: 'learn', target: '.segmented',
-    title: 'Học tập & Trợ lý AI',
-    body: cap === 4
-      ? 'Đấu trường Quiz giúp củng cố kiến thức nghị quyết; Trợ lý AI trả lời nghiệp vụ 24/7.'
-      : 'Ngoài Quiz và Trợ lý AI, cán bộ còn có công cụ soạn văn bản và trích biên bản tự động trong 3 giây.'
-  });
-
-  if (cap <= 3) {
-    steps.push({
-      view: 'admin', target: '#screen .card',
-      title: 'Khu Quản trị',
-      body: cap <= 2
-        ? 'Duyệt yêu cầu cấp lại PIN, thêm/sửa đoàn viên và phê duyệt hồ sơ Ươm mầm Đỏ trên phạm vi quản lý.'
-        : 'Ủy quyền tạm thời cho Phó Bí thư, thêm đoàn viên vào Ấp và các thao tác quản lý Chi đoàn.'
+  if (cap === 4) {
+    push({
+      tag: 'Thẻ Đoàn viên', view: 'card', target: '[data-act="eval360"]',
+      title: 'Tiện ích thẻ số',
+      body: 'Từ đây bạn có thể Tự đánh giá 360°, cấp E-Cert và In / Lưu thẻ thành PDF.'
     });
   }
 
-  steps.push({
+  push({
+    tag: 'SOS & Bản đồ', view: 'sos', target: '#sos-map',
+    title: 'Bản đồ tình nguyện & SOS',
+    body: cap === 4
+      ? 'Bản đồ hiển thị phản ánh và nhiệm vụ quanh bạn theo tọa độ GPS thực tế.'
+      : 'Bản đồ hiển thị phản ánh của đoàn viên và các nhiệm vụ tình nguyện trên địa bàn.'
+  });
+  push({
+    tag: 'SOS & Bản đồ', view: 'sos',
+    target: cap === 4
+      ? 'form[data-form="sos"]'
+      : function () { return document.querySelector('[data-act="sos-to-mission"]') || document.querySelector('[data-act="checkin-mission"]') || document.querySelector('#screen .card:not(.sk-card)'); },
+    title: cap === 4 ? 'Gửi phản ánh hiện trường' : 'Xử lý phản ánh / nhiệm vụ',
+    body: cap === 4
+      ? 'Chọn loại hiện trường, mô tả và gửi kèm tọa độ GPS để nhận điểm Dân vận khéo; bên dưới là nhiệm vụ để check-in.'
+      : 'Duyệt phản ánh thành nhiệm vụ tình nguyện, hoặc theo dõi các lượt check-in GPS của đoàn viên.'
+  });
+
+  push({
+    tag: 'Học tập & AI', view: 'learn', target: '.segmented',
+    title: 'Học tập & Trợ lý AI',
+    body: cap === 4
+      ? 'Ba phân khu: Đấu trường Quiz, Trợ lý AI 24/7 và (với cán bộ) công cụ soạn văn bản.'
+      : 'Chuyển giữa Đấu trường Quiz, Trợ lý AI 24/7 và công cụ soạn văn bản Đoàn - Đảng.'
+  });
+  push({
+    tag: 'Học tập & AI', view: 'learn',
+    target: cap <= 3 ? 'form[data-form="ai-script"]' : '#chat-box',
+    title: cap <= 3 ? 'AI soạn văn bản Đoàn - Đảng' : 'Trợ lý AI trả lời 24/7',
+    body: cap <= 3
+      ? 'Nhập chủ đề và thời lượng để tạo kịch bản điều hành họp; có thể trích biên bản giới thiệu đoàn viên ưu tú.'
+      : 'Nhắn tin để tra cứu điểm, cảnh báo, đoàn phí, điểm danh… Trợ lý chạy theo kịch bản nghiệp vụ trên Google Sheets.',
+    before: function () { S.learnTab = cap <= 3 ? 'doc' : 'ai'; go('learn'); }
+  });
+
+  if (cap <= 3) {
+    push({
+      tag: 'Quản trị', view: 'admin', target: MAIN,
+      title: 'Khu Quản trị',
+      body: cap <= 2
+        ? 'Duyệt yêu cầu cấp lại PIN và phê duyệt hồ sơ Ươm mầm Đỏ trên phạm vi quản lý.'
+        : 'Ủy quyền tạm thời cho Phó Bí thư khi bạn đi công tác.'
+    });
+    push({
+      tag: 'Quản trị', view: 'admin', target: 'form[data-form="member-add"]',
+      title: 'Thêm đoàn viên',
+      body: 'Nhập họ tên, số điện thoại và ngày sinh để tạo tài khoản đoàn viên; mã định danh và PIN mặc định được cấp tự động.'
+    });
+  }
+
+  push({
+    tag: 'Điều hướng',
     target: '.bottomnav',
     title: 'Điều hướng nhanh',
     body: 'Dùng thanh dưới cùng để chuyển giữa các phân hệ bất cứ lúc nào.'
   });
 
-  steps.push({
+  push({
+    tag: 'Kết thúc',
     title: 'Hoàn tất hướng dẫn',
     html: 'Bạn đã xem hết các chức năng chính của tài khoản <b>' + esc(maDD) + '</b>. ' +
       'Nhấn biểu tượng <b>bóng đèn</b> trên thanh trên cùng để xem lại hướng dẫn bất cứ lúc nào.'
@@ -200,6 +249,7 @@ var TOUR_RUN = {
   timer: null,
   paused: false,
   targetEl: null,
+  targetSelector: null,
   root: null,
   spot: null,
   tip: null,
@@ -233,6 +283,7 @@ function stopDemoTour() {
   TOUR_RUN.tip = null;
   TOUR_RUN.active = false;
   TOUR_RUN.targetEl = null;
+  TOUR_RUN.targetSelector = null;
   TOUR_RUN.steps = [];
   TOUR_RUN.idx = 0;
 }
@@ -264,7 +315,14 @@ async function showTourStep() {
 
   clearTourTimer();
   TOUR_RUN.paused = false;
+  TOUR_RUN.targetEl = null;
+  TOUR_RUN.targetSelector = step.target || null;
+  if (TOUR_RUN.spot) TOUR_RUN.spot.style.display = 'none';
+
+  // Hiện chú thích ngay ở giữa để người xem luôn đọc được nội dung
+  // trong lúc màn hình đang tải, rồi mới di chuyển tới đúng vị trí.
   renderTourTip(step);
+  showTipCentered();
 
   // Mở đúng màn hình / tab trước khi tô sáng.
   try { if (step.view && S.view !== step.view) go(step.view); } catch (e) { /* bỏ qua */ }
@@ -275,13 +333,40 @@ async function showTourStep() {
 
   TOUR_RUN.targetEl = el;
   if (el && el.scrollIntoView) {
-    try { el.scrollIntoView({ block: 'center', behavior: 'smooth' }); } catch (e) { try { el.scrollIntoView(); } catch (e2) { /* bỏ qua */ } }
-    await tourDelay(340);
+    // Cuộn tức thời để vị trí tô sáng khớp ngay, tránh "nhảy" trong lúc cuộn mượt.
+    try { el.scrollIntoView({ block: 'center', behavior: 'auto' }); } catch (e) { try { el.scrollIntoView(); } catch (e2) { /* bỏ qua */ } }
+    await tourDelay(140);
     if (!TOUR_RUN.active || TOUR_RUN.steps[TOUR_RUN.idx] !== step) return;
   }
 
   positionTour(el);
   startTourTimer();
+
+  // Căn lại lần cuối sau khi bố cục ổn định (ảnh/QR/bản đồ vừa vẽ xong).
+  var settleAt = TOUR_RUN.idx;
+  setTimeout(function () {
+    if (!TOUR_RUN.active || TOUR_RUN.idx !== settleAt) return;
+    var cur = TOUR_RUN.targetEl;
+    if (cur && cur.isConnected === false && TOUR_RUN.targetSelector) cur = requeryTourTarget();
+    TOUR_RUN.targetEl = cur;
+    positionTour(cur);
+  }, 420);
+}
+
+/** Giữ chú thích ở giữa màn hình trong lúc chờ mục tiêu. */
+function showTipCentered() {
+  var tip = TOUR_RUN.tip;
+  if (!tip) return;
+  tip.classList.add('tour-tip-center');
+  tip.style.top = '';
+  tip.style.left = '';
+  tip.style.visibility = 'visible';
+}
+
+function requeryTourTarget() {
+  var selector = TOUR_RUN.targetSelector;
+  if (!selector) return null;
+  try { return (typeof selector === 'function') ? selector() : document.querySelector(selector); } catch (e) { return null; }
 }
 
 /** Chờ phần tử đích xuất hiện (màn hình đang tải dữ liệu bất đồng bộ). */
@@ -293,7 +378,7 @@ function resolveTourTarget(selector) {
       var el = null;
       try { el = (typeof selector === 'function') ? selector() : document.querySelector(selector); } catch (e) { el = null; }
       if (el && isTourVisible(el)) return resolve(el);
-      if (Date.now() - t0 > 5000) return resolve(el);
+      if (Date.now() - t0 > 5000) return resolve(null);
       setTimeout(check, 120);
     })();
   });
@@ -301,6 +386,9 @@ function resolveTourTarget(selector) {
 
 function isTourVisible(el) {
   if (!el || !el.getBoundingClientRect) return false;
+  if (el.isConnected === false) return false;
+  // Bỏ qua khung xương (skeleton) đang tải để không tô sáng nhầm.
+  if (el.classList && (el.classList.contains('skeleton') || el.classList.contains('sk-card'))) return false;
   var r = el.getBoundingClientRect();
   return r.width > 2 && r.height > 2;
 }
@@ -311,7 +399,7 @@ function positionTour(el) {
   if (!spot || !tip) return;
   tip.style.visibility = 'hidden';
 
-  if (el && el.getBoundingClientRect) {
+  if (el && isTourVisible(el)) {
     var pad = 8;
     var r = el.getBoundingClientRect();
     spot.style.display = 'block';
@@ -366,6 +454,7 @@ function renderTourTip(step) {
       '<span class="tour-step">Bước ' + n + '/' + total + '</span>' +
       '<button class="tour-x" type="button" data-tour="close" aria-label="Đóng hướng dẫn">' + icon('x', 15) + '</button>' +
     '</div>' +
+    (step.tag ? '<div class="tour-tag">' + esc(step.tag) + '</div>' : '') +
     '<h4 class="tour-title">' + esc(step.title || '') + '</h4>' +
     '<p class="tour-body">' + (step.html || esc(step.body || '')) + '</p>' +
     '<div class="tour-meta">' +
@@ -454,7 +543,14 @@ function bindTourEvents() {
     else if (e.key === 'ArrowLeft') prevTourStep();
   };
   TOUR_RUN.onAdjust = function () {
-    if (TOUR_RUN.active) positionTour(TOUR_RUN.targetEl);
+    if (!TOUR_RUN.active) return;
+    var el = TOUR_RUN.targetEl;
+    // Màn hình có thể vừa được vẽ lại → tìm lại đúng phần tử theo selector.
+    if ((!el || el.isConnected === false) && TOUR_RUN.targetSelector) {
+      el = requeryTourTarget();
+      TOUR_RUN.targetEl = el;
+    }
+    if (el && el.isConnected !== false) positionTour(el);
   };
   document.addEventListener('keydown', TOUR_RUN.onKey);
   window.addEventListener('resize', TOUR_RUN.onAdjust);
