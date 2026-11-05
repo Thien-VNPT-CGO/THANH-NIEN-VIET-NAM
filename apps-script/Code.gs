@@ -29,6 +29,9 @@ function api(action, payload, token) {
     // Nâng cấp lược đồ một lần cho mỗi phiên bản (không chạy lại trên mỗi request).
     try { ensureSchema_(); }
     catch (e) { Logger.log('Không nâng cấp được lược đồ: ' + (e && e.message ? e.message : e)); }
+    // Bổ sung Chi đoàn Ấp Hòa Bình + tài khoản Bí thư một lần (không chặn API nếu lỗi).
+    try { ensureHoaBinhOnce_(); }
+    catch (e) { Logger.log('Không bổ sung được Chi đoàn Ấp Hòa Bình: ' + (e && e.message ? e.message : e)); }
 
     // -------- Nhóm công khai (không cần đăng nhập) --------
     if (action === 'auth.login') return ok_(withLock_(function () { return svc_login(payload); }));

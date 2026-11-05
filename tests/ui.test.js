@@ -97,7 +97,7 @@ function screenText(dom) { return dom.window.document.querySelector('#screen').t
   const doc = dom.window.document;
   await waitFor(() => doc.querySelector('form[data-form="login"]'));
   ok(!!doc.querySelector('.login-card'), 'Form đăng nhập hiển thị');
-  ok(doc.querySelectorAll('.demo-chip').length === 5, '5 tài khoản trải nghiệm C0–C4');
+  ok(doc.querySelectorAll('.demo-chip').length === 6, '6 tài khoản trải nghiệm C0–C4');
   ok(doc.body.textContent.includes('CHẾ ĐỘ XEM TRƯỚC'), 'Có nhãn chế độ xem trước');
 
   console.log('\n[1] Cấp 1 (Chủ tịch Hội LHTN Xã)');

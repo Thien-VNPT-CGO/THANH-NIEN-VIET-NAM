@@ -11,7 +11,7 @@ Toàn bộ hệ thống chạy trên hạ tầng Google (không cần máy chủ
 | Hạng mục | Giá trị |
 |---|---|
 | Tên hệ thống | Hệ sinh thái Chi đoàn số 6.0 |
-| Đơn vị | Xã Tân Hòa — 3 Ấp: Tân Bình (AP01), Tân Lập (AP02), Tân Phú (AP03) |
+| Đơn vị | Xã Tân Hòa — 4 Ấp: Tân Bình (AP01), Tân Lập (AP02), Tân Phú (AP03), Hòa Bình (AP04) |
 | Nền tảng | Google Sheets (CSDL) + Google Apps Script (API) + HTML/CSS/JS (giao diện) |
 | Xác thực | Mã định danh / SĐT + **PIN 6 số** (C1–C4); tài khoản **ADMIN** dùng mật khẩu chữ, phiên đăng nhập 12 giờ |
 | Phân quyền | 5 cấp: **C0 Quản trị hệ thống** · **C1 Chủ tịch Ủy Ban Hội LHTN Việt Nam Xã** · **C2 Bí thư Chi bộ Xã** · **C3 Bí thư Chi đoàn Ấp** · **C4 Đoàn viên Ấp** |
@@ -201,6 +201,7 @@ Mật khẩu/PIN chung cho tài khoản nghiệp vụ: **`123456`**
 | `BT_AP01` | Trần Thị Mai | C3 · Bí thư Chi đoàn Ấp | Tân Bình | 260 |
 | `BT_AP02` | Lê Quốc Bảo | C3 · Bí thư Chi đoàn Ấp | Tân Lập | 240 |
 | `BT_AP03` | Phạm Ngọc Lan | C3 · Bí thư Chi đoàn Ấp | Tân Phú | 215 |
+| `BT_AP04` | Nguyễn Thanh Thiên | C3 · Bí thư Chi đoàn Ấp | Hòa Bình | 0 |
 | `DV01` | Võ Minh Khoa | C4 · Đoàn viên Ấp | Tân Bình | 340 |
 | `DV02` | Nguyễn Thị Thu Hà | C4 · Đoàn viên Ấp | Tân Bình | 285 |
 | `DV05` | Đặng Quốc Huy | C4 · Đoàn viên Ấp | Tân Lập | 310 |
@@ -218,7 +219,7 @@ Ngoài ra có `DV03`, `DV04`, `DV06`… với điểm thấp hơn để thử lu
 | Nhóm | Sheet | Nội dung |
 |---|---|---|
 | Cấu hình | `CauHinh` | Tham số hệ thống (tên xã, năm, mục tiêu điểm, ngân hàng VietQR…), `PHIEN_BAN_CAU_HINH` cho đồng bộ realtime |
-| Danh mục | `DM_Ap`, `DM_CanBo` | 3 Ấp; hồ sơ cán bộ/Đoàn viên (PIN băm, điểm, điểm nền, thẻ, ủy quyền, khóa đăng nhập, `TokenVersion`, xóa mềm, `MatKhauHash` cho ADMIN) |
+| Danh mục | `DM_Ap`, `DM_CanBo` | 4 Ấp; hồ sơ cán bộ/Đoàn viên (PIN băm, điểm, điểm nền, thẻ, ủy quyền, khóa đăng nhập, `TokenVersion`, xóa mềm, `MatKhauHash` cho ADMIN) |
 | Điểm danh | `QR_Phien`, `DiemDanh` | Phiên điểm danh, token QR, lịch sử quét |
 | Ươm mầm Đỏ | `UomMamDo` | Đề cử, tiêu chí, trạng thái duyệt |
 | Tài chính | `DoanPhi`, `Quy_ThuChi` | Giao dịch đoàn phí, sổ thu–chi công khai |

@@ -84,7 +84,8 @@ var DEFAULT_ADMIN_PASSWORD = 'ThanhnienvietnamXTH';
 var AP_MAU = [
   ['AP01', 'Ấp Tân Bình', 'BT_AP01', 100, ''],
   ['AP02', 'Ấp Tân Lập', 'BT_AP02', 90, ''],
-  ['AP03', 'Ấp Tân Phú', 'BT_AP03', 80, '']
+  ['AP03', 'Ấp Tân Phú', 'BT_AP03', 80, ''],
+  ['AP04', 'Ấp Hòa Bình', 'BT_AP04', 70, '']
 ];
 
 /* Mã, Họ tên, Cấp, Chức vụ, Ấp, SĐT, Ngày sinh, PIN, Điểm, Trạng thái, Mã thẻ */
@@ -94,6 +95,7 @@ var CANBO_MAU = [
   ['BT_AP01', 'Trần Thị Mai', 3, 'Bí thư Chi đoàn Ấp Tân Bình', 'AP01', '0901000002', '20/07/1998', '123456', 260, 'Đang hoạt động', '', '26/03/2017', 'Chi đoàn Ấp Tân Bình', 'Ngày 20 hằng tháng'],
   ['BT_AP02', 'Lê Quốc Bảo', 3, 'Bí thư Chi đoàn Ấp Tân Lập', 'AP02', '0901000003', '02/11/1997', '123456', 240, 'Đang hoạt động', '', '26/03/2016', 'Chi đoàn Ấp Tân Lập', 'Ngày 20 hằng tháng'],
   ['BT_AP03', 'Phạm Ngọc Lan', 3, 'Bí thư Chi đoàn Ấp Tân Phú', 'AP03', '0901000004', '12/09/1999', '123456', 215, 'Đang hoạt động', '', '26/03/2018', 'Chi đoàn Ấp Tân Phú', 'Ngày 20 hằng tháng'],
+  ['BT_AP04', 'Nguyễn Thanh Thiên', 3, 'Bí thư Chi đoàn Ấp Hòa Bình', 'AP04', '0901000005', '', '123456', 0, 'Đang hoạt động', '', '', 'Chi đoàn Ấp Hòa Bình', 'Ngày 20 hằng tháng'],
   ['DV01', 'Võ Minh Khoa', 4, 'Đoàn viên', 'AP01', '0902000001', '08/05/2003', '123456', 340, 'Đang hoạt động', 'TDV-2026-AP01-01', '26/03/2021', 'Chi đoàn Ấp Tân Bình', 'Ngày 25 hằng tháng'],
   ['DV02', 'Nguyễn Thị Thu Hà', 4, 'Đoàn viên', 'AP01', '0902000002', '19/02/2004', '123456', 285, 'Đang hoạt động', 'TDV-2026-AP01-02', '26/03/2022', 'Chi đoàn Ấp Tân Bình', 'Ngày 25 hằng tháng'],
   ['DV03', 'Trương Tấn Phát', 4, 'Đoàn viên', 'AP01', '0902000003', '30/10/2002', '123456', 180, 'Đang hoạt động', '', '26/03/2020', 'Chi đoàn Ấp Tân Bình', 'Ngày 25 hằng tháng'],
@@ -132,6 +134,7 @@ function setup() {
   ensureAdmin_();
   ensureSecurityV3_();
   ensureConfigVersion_();
+  ensureHoaBinh_();
   ensureBackupTrigger_();
   ensureSchema_(true);
   return 'Khởi tạo thành công: ' + Object.keys(SCHEMA).length + ' bảng dữ liệu. Xem file README.md để triển khai Web App.';
@@ -311,6 +314,7 @@ function resetDemo() {
   ensureAdmin_();
   ensureSecurityV3_();
   ensureConfigVersion_();
+  ensureHoaBinh_();
   ensureBackupTrigger_();
   return 'Đã nạp lại dữ liệu mẫu.';
 }
@@ -339,6 +343,56 @@ function ensureConfigVersion_() {
     GiaTri: '1',
     MoTa: 'Phiên bản cấu hình — tăng khi quản trị thay đổi dữ liệu để các phiên tự đồng bộ'
   });
+  return true;
+}
+
+/**
+ * Bổ sung Chi đoàn Ấp Hòa Bình và tài khoản Bí thư Nguyễn Thanh Thiên.
+ * Idempotent: chỉ thêm khi thiếu, luôn chuẩn hóa đúng Cấp 3 – Bí thư Chi đoàn Ấp Hòa Bình.
+ */
+function ensureHoaBinh_() {
+  var MA_AP = 'AP04';
+  var MA_DD = 'BT_AP04';
+  var TEN_AP = 'Ấp Hòa Bình';
+  var CHUC_VU = 'Bí thư Chi đoàn Ấp Hòa Bình';
+
+  var ap = findBy_('DM_Ap', 'MaAp', MA_AP);
+  if (!ap) {
+    append_('DM_Ap', { MaAp: MA_AP, TenAp: TEN_AP, BiThu: MA_DD, ChiTieu: 70, GhiChu: '' });
+  } else {
+    var patchAp = {};
+    if (String(ap.TenAp || '').trim() !== TEN_AP) patchAp.TenAp = TEN_AP;
+    if (!ap.BiThu) patchAp.BiThu = MA_DD;
+    if (Object.keys(patchAp).length) update_('DM_Ap', 'MaAp', MA_AP, patchAp);
+  }
+
+  var u = findBy_('DM_CanBo', 'MaDD', MA_DD);
+  if (!u) {
+    var mau = CANBO_MAU.filter(function (r) { return r[0] === MA_DD; })[0];
+    if (mau) append_('DM_CanBo', mapCanBo_(mau));
+  } else {
+    var patch = {};
+    if (Number(u.Cap) !== 3) patch.Cap = 3;
+    if (String(u.ChucVu || '') !== CHUC_VU) patch.ChucVu = CHUC_VU;
+    if (String(u.MaAp || '') !== MA_AP) patch.MaAp = MA_AP;
+    if (Object.keys(patch).length) update_('DM_CanBo', 'MaDD', MA_DD, patch);
+  }
+
+  invalidateRows_();
+  return true;
+}
+
+/**
+ * Chạy bổ sung Chi đoàn Ấp Hòa Bình một lần cho bảng tính đang chạy.
+ * Dấu trong Script Properties tránh đọc/ghi lại trên mỗi lần gọi API.
+ */
+function ensureHoaBinhOnce_() {
+  var props = PropertiesService.getScriptProperties();
+  if (props.getProperty('BO_SUNG_HOA_BINH_V1') === '1') return false;
+  // Chưa chạy setup() thì chưa có dữ liệu — không tự thêm vào bảng tính trống.
+  if (!rows_('DM_CanBo').length) return false;
+  ensureHoaBinh_();
+  props.setProperty('BO_SUNG_HOA_BINH_V1', '1');
   return true;
 }
 

@@ -34,9 +34,9 @@ async function expectError(p, title) {
 
   console.log('\n[2] Dashboard theo phạm vi');
   const h1 = await api.call('home.summary', {}, ct.token);
-  ok(h1.kpi.length === 4 && h1.apStats.length === 3, 'Cấp 1 thấy KPI + toàn bộ 3 Ấp');
+  ok(h1.kpi.length === 4 && h1.apStats.length === 4, 'Cấp 1 thấy KPI + toàn bộ 4 Ấp');
   const h2 = await api.call('home.summary', {}, c1.token);
-  ok(h2.apStats.length === 3, 'Cấp 2 (Bí thư Chi bộ Xã) thấy toàn bộ 3 Ấp');
+  ok(h2.apStats.length === 4, 'Cấp 2 (Bí thư Chi bộ Xã) thấy toàn bộ 4 Ấp');
   const h3 = await api.call('home.summary', {}, c2.token);
   ok(h3.apStats.length === 1, 'Cấp 3 chỉ thấy Ấp mình');
   const h4 = await api.call('home.summary', {}, c3.token);
@@ -83,7 +83,7 @@ async function expectError(p, title) {
   const sum = await api.call('fee.summary', {}, c2.token);
   ok(sum.pending.length >= 1 && sum.stats.length === 1, 'Giao dịch vào hàng chờ của Ấp');
   const sumXa = await api.call('fee.summary', {}, c1.token);
-  ok(sumXa.stats.length === 3, 'Cấp 2 thấy Sổ quỹ toàn Xã');
+  ok(sumXa.stats.length === 4, 'Cấp 2 thấy Sổ quỹ toàn Xã');
   const c2b = await api.call('auth.login', { maDD: 'BT_AP02', pin: '123456' });
   await expectError(api.call('fee.confirm', { maGiaoDich: pay.maGiaoDich }, c2b.token), 'Cấp 3 Ấp khác không được xác nhận');
   const cf = await api.call('fee.confirm', { maGiaoDich: pay.maGiaoDich }, c2.token);
@@ -143,7 +143,7 @@ async function expectError(p, title) {
   ok(ans.dung === true && ans.diem === 15, 'Trả lời đúng +15 điểm');
   await expectError(api.call('quiz.answer', { maCau: 'Q01', dapAn: 'B' }, c3.token), 'Chống trả lời lại');
   const lb = await api.call('leaderboard', {}, c3.token);
-  ok(lb.top.length > 0 && lb.aps.length === 3, 'Bảng xếp hạng cá nhân + Ấp');
+  ok(lb.top.length > 0 && lb.aps.length === 4, 'Bảng xếp hạng cá nhân + Ấp');
 
   console.log('\n[9] Trợ lý AI');
   const bot = await api.call('bot.ask', { text: 'DIEM DV01' }, c3.token);
@@ -205,20 +205,20 @@ async function expectError(p, title) {
   ok(!!adSoft.token, 'ADMIN vẫn đăng nhập được sau 5 lần sai (không bị khóa cứng từ xa)');
 
   const admSum = await api.call('admin.summary', {}, ad2.token);
-  ok(admSum.soAp === 3 && admSum.soDoanVien >= 13, 'Tổng quan: 3 Ấp và đủ đoàn viên');
-  ok(admSum.soCanBo === 5, 'Tổng quan: 5 cán bộ Cấp 1–3');
+  ok(admSum.soAp === 4 && admSum.soDoanVien >= 13, 'Tổng quan: 4 Ấp và đủ đoàn viên');
+  ok(admSum.soCanBo === 6, 'Tổng quan: 6 cán bộ Cấp 1–3');
   const aps = await api.call('admin.ap.list', {}, ad2.token);
-  ok(aps.items.length === 3 && aps.items[0].soDoanVien > 0, 'Danh sách Ấp kèm số đoàn viên');
+  ok(aps.items.length === 4 && aps.items[0].soDoanVien > 0, 'Danh sách Ấp kèm số đoàn viên');
 
   const newAp = await api.call('admin.ap.save', { tenAp: 'Ấp Tân Thới', chiTieu: 30 }, ad2.token);
-  ok(newAp.maAp === 'AP04', 'Thêm Ấp mới, mã tự tăng');
+  ok(newAp.maAp === 'AP05', 'Thêm Ấp mới, mã tự tăng');
   await expectError(api.call('admin.ap.delete', { maAp: 'AP01' }, ad2.token), 'Không xóa Ấp còn tài khoản');
-  await api.call('admin.ap.save', { maAp: 'AP04', tenAp: 'Ấp Tân Thới', chiTieu: 35 }, ad2.token);
+  await api.call('admin.ap.save', { maAp: 'AP05', tenAp: 'Ấp Tân Thới', chiTieu: 35 }, ad2.token);
   const aps2 = await api.call('admin.ap.list', {}, ad2.token);
-  ok(aps2.items.filter(a => a.maAp === 'AP04')[0].chiTieu === 35, 'Cập nhật thông tin Ấp');
-  await api.call('admin.ap.delete', { maAp: 'AP04' }, ad2.token);
+  ok(aps2.items.filter(a => a.maAp === 'AP05')[0].chiTieu === 35, 'Cập nhật thông tin Ấp');
+  await api.call('admin.ap.delete', { maAp: 'AP05' }, ad2.token);
   const aps3 = await api.call('admin.ap.list', {}, ad2.token);
-  ok(aps3.items.length === 3, 'Xóa Ấp khi không còn tài khoản');
+  ok(aps3.items.length === 4, 'Xóa Ấp khi không còn tài khoản');
 
   const cfgList = await api.call('admin.config.list', {}, ad2.token);
   ok(cfgList.items.some(i => i.khoa === 'DIEM_SOS' && i.giaTri === 10), 'Đọc cấu hình điểm');
@@ -306,7 +306,7 @@ async function expectError(p, title) {
   const aDis = await api.call('attendance.list', {}, ad2.token);
   ok(aDis.items.length >= 12, 'Admin xem điểm danh toàn Xã');
   const aFee = await api.call('fee.summary', {}, ad2.token);
-  ok(aFee.stats.length === 3, 'Admin xem Sổ quỹ toàn Xã');
+  ok(aFee.stats.length === 4, 'Admin xem Sổ quỹ toàn Xã');
   const aCard = await api.call('card.list', {}, ad2.token);
   ok(aCard.items.length >= 12, 'Admin thấy danh sách thẻ toàn Xã');
   const aUm = await api.call('uommam.list', {}, ad2.token);
@@ -361,7 +361,7 @@ async function expectError(p, title) {
   await expectError(api.call('system.health', {}, c1.token), 'Cấp 1 không xem được sức khỏe hệ thống');
 
   const rp = await api.call('report.summary', { tuNgay: '01/01/2026', denNgay: '31/12/2026' }, ad2.token);
-  ok(rp.doanVien > 0 && rp.theoAp.length === 3, 'Báo cáo năm: có đoàn viên và đủ 3 Ấp');
+  ok(rp.doanVien > 0 && rp.theoAp.length === 4, 'Báo cáo năm: có đoàn viên và đủ 4 Ấp');
   ok(rp.tuNgay === '01/01/2026' && rp.denNgay === '31/12/2026', 'Báo cáo giữ đúng khoảng thời gian');
   ok(rp.top.length > 0 && rp.top.length <= 5, 'Báo cáo có top 5 điểm rèn luyện');
   const rpAp = await api.call('report.summary', {

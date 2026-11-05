@@ -176,6 +176,7 @@
       ['BT_AP01', 'Trần Thị Mai', 3, 'Bí thư Chi đoàn Ấp Tân Bình', 'AP01', '0901000002', '20/07/1998', 260, '', '26/03/2017', 'Chi đoàn Ấp Tân Bình', 'Ngày 20 hằng tháng'],
       ['BT_AP02', 'Lê Quốc Bảo', 3, 'Bí thư Chi đoàn Ấp Tân Lập', 'AP02', '0901000003', '02/11/1997', 240, '', '26/03/2016', 'Chi đoàn Ấp Tân Lập', 'Ngày 20 hằng tháng'],
       ['BT_AP03', 'Phạm Ngọc Lan', 3, 'Bí thư Chi đoàn Ấp Tân Phú', 'AP03', '0901000004', '12/09/1999', 215, '', '26/03/2018', 'Chi đoàn Ấp Tân Phú', 'Ngày 20 hằng tháng'],
+      ['BT_AP04', 'Nguyễn Thanh Thiên', 3, 'Bí thư Chi đoàn Ấp Hòa Bình', 'AP04', '0901000005', '', 0, '', '', 'Chi đoàn Ấp Hòa Bình', 'Ngày 20 hằng tháng'],
       ['DV01', 'Võ Minh Khoa', 4, 'Đoàn viên', 'AP01', '0902000001', '08/05/2003', 340, 'TDV-2026-AP01-01', '26/03/2021', 'Chi đoàn Ấp Tân Bình', 'Ngày 25 hằng tháng'],
       ['DV02', 'Nguyễn Thị Thu Hà', 4, 'Đoàn viên', 'AP01', '0902000002', '19/02/2004', 285, 'TDV-2026-AP01-02', '26/03/2022', 'Chi đoàn Ấp Tân Bình', 'Ngày 25 hằng tháng'],
       ['DV03', 'Trương Tấn Phát', 4, 'Đoàn viên', 'AP01', '0902000003', '30/10/2002', 180, '', '26/03/2020', 'Chi đoàn Ấp Tân Bình', 'Ngày 25 hằng tháng'],
@@ -227,7 +228,8 @@
       aps: [
         { MaAp: 'AP01', TenAp: 'Ấp Tân Bình', BiThu: 'BT_AP01', ChiTieu: 100 },
         { MaAp: 'AP02', TenAp: 'Ấp Tân Lập', BiThu: 'BT_AP02', ChiTieu: 90 },
-        { MaAp: 'AP03', TenAp: 'Ấp Tân Phú', BiThu: 'BT_AP03', ChiTieu: 80 }
+        { MaAp: 'AP03', TenAp: 'Ấp Tân Phú', BiThu: 'BT_AP03', ChiTieu: 80 },
+        { MaAp: 'AP04', TenAp: 'Ấp Hòa Bình', BiThu: 'BT_AP04', ChiTieu: 70 }
       ],
       users: users,
       cards: [],
@@ -423,6 +425,38 @@
       if (admin.DaXoa === undefined) admin.DaXoa = false;
       if (admin.TokenVersion === undefined) admin.TokenVersion = 1;
       if (admin.SoLanSai === undefined) admin.SoLanSai = 0;
+    }
+
+    /* Chi đoàn Ấp Hòa Bình + tài khoản Bí thư (bổ sung idempotent cho dữ liệu cũ). */
+    db.aps = db.aps || [];
+    var apHoaBinh = find(db.aps, 'MaAp', 'AP04');
+    if (!apHoaBinh) {
+      apHoaBinh = { MaAp: 'AP04', TenAp: 'Ấp Hòa Bình', BiThu: 'BT_AP04', ChiTieu: 70 };
+      db.aps.push(apHoaBinh);
+    }
+    if (!apHoaBinh.BiThu) apHoaBinh.BiThu = 'BT_AP04';
+
+    db.users = db.users || [];
+    var btHoaBinh = find(db.users, 'MaDD', 'BT_AP04');
+    if (!btHoaBinh) {
+      db.users.push({
+        MaDD: 'BT_AP04', HoTen: 'Nguyễn Thanh Thiên', Cap: 3,
+        ChucVu: 'Bí thư Chi đoàn Ấp Hòa Bình', MaAp: 'AP04',
+        DienThoai: '0901000005', NgaySinh: '',
+        PIN: '', PINHash: hashPin('BT_AP04', '123456'),
+        BatDoiPin: false, SoLanSai: 0, KhoaDen: '', TokenVersion: 1,
+        Diem: 0, DiemNen: 0, TrangThai: 'Đang hoạt động', MaThe: '',
+        NgayVaoDoan: '', NoiVaoDoan: 'Chi đoàn Ấp Hòa Bình',
+        NgaySinhHoatDoan: 'Ngày 20 hằng tháng',
+        UyQuyenCho: '', UyQuyenDen: '', NgayThamGia: '01/01/2026',
+        DaXoa: false, NgayXoa: '', NguoiXoa: ''
+      });
+    } else {
+      // Luôn chuẩn hóa đúng cấp bậc, chức vụ và đơn vị của tài khoản Bí thư.
+      btHoaBinh.Cap = 3;
+      btHoaBinh.ChucVu = 'Bí thư Chi đoàn Ấp Hòa Bình';
+      btHoaBinh.MaAp = 'AP04';
+      if (btHoaBinh.DaXoa === undefined) btHoaBinh.DaXoa = false;
     }
     return db;
   }
