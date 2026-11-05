@@ -215,6 +215,26 @@ Mật khẩu/PIN chung cho tài khoản nghiệp vụ: **`123456`**
 
 Ngoài ra có `DV03`, `DV04`, `DV06`… với điểm thấp hơn để thử luồng cảnh báo.
 
+### Logo Chi đoàn Ấp
+
+Mỗi Chi đoàn Ấp dùng đúng logo của mình. Logo hiển thị ở **topbar** khi đăng nhập, **thẻ Đoàn viên điện tử**, **danh sách Chi đoàn Ấp** và **danh sách tài khoản** ở tab Quản trị. Ảnh gốc nằm trong `image/logo/`; bản thumbnail 192×192 dùng cho ứng dụng nằm trong `web/assets/ap-logo/` và được nhúng tự động vào `apps-script/Index.html` khi build.
+
+| Mã | Chi đoàn Ấp | Tệp logo |
+|---|---|---|
+| AP01 | Tân Xuân | `ap01.jpg` |
+| AP02 | Nghĩa Chí | `ap02.jpg` |
+| AP03 | Dương Hòa | `ap03.jpg` |
+| AP04 | Hòa Bình | `ap04.jpg` |
+| AP05 | Hiệp Trị | `ap05.jpg` |
+| AP06 | Xóm Gò | `ap06.jpg` |
+| AP07 | Vạn Thành | `ap07.jpg` |
+| AP08 | Thạnh Hòa | `ap08.jpg` |
+| AP09 | Dương Phú | `ap09.jpg` |
+| AP10 | Lò Gạch | `ap10.jpg` |
+| AP11 | Ruộng Cạn | `ap11.jpg` |
+
+> Thư mục `image/logo/` còn 3 logo của Ấp **Thanh Nhung 1**, **Thanh Nhung 2** và **Hòa Thơm** — chưa gán vì danh sách tài khoản Bí thư hiện tại không có 3 Ấp này.
+
 > **Tài khoản quản trị:** `ADMIN` / `ThanhnienvietnamXTH` — không dùng PIN. Lần đăng nhập đầu tiên hệ thống bắt buộc đổi mật khẩu; trên bản xem trước cục bộ, dữ liệu admin được lưu trong cùng `localStorage`.
 
 > `DV01` đủ điều kiện Ươm mầm Đỏ và **chưa đóng đoàn phí** — thuận tiện demo luồng VietQR.
@@ -274,9 +294,9 @@ Bảng tính được tạo hoàn toàn bằng `setup()` — không cần tạo 
 
 | Bộ test | Phạm vi | Kết quả |
 |---|---|---|
-| `tests/api.test.js` (Node) | 13 nhóm nghiệp vụ backend: đăng nhập C1–C4, QR, Ươm mầm, đoàn phí, thẻ, SOS, quiz, AI, quản trị, bảo mật, **quản trị hệ thống C0**, **cập nhật hồ sơ Chủ tịch Hội LHTN Xã & Bí thư Chi bộ Xã**, **Admin toàn quyền nghiệp vụ & CRUD đoàn viên**, **phân trang danh sách đoàn viên**, **khóa đăng nhập, thu hồi token, buộc đổi PIN, xóa mềm/khôi phục, sao lưu/kiểm tra/phục hồi & đối soát điểm**, **chống khóa ADMIN từ xa**, **phiên bản cấu hình realtime** | **181/181 đạt** |
+| `tests/api.test.js` (Node) | 13 nhóm nghiệp vụ backend: đăng nhập C1–C4, QR, Ươm mầm, đoàn phí, thẻ, SOS, quiz, AI, quản trị, bảo mật, **quản trị hệ thống C0**, **cập nhật hồ sơ Chủ tịch Hội LHTN Xã & Bí thư Chi bộ Xã**, **Admin toàn quyền nghiệp vụ & CRUD đoàn viên**, **phân trang danh sách đoàn viên**, **khóa đăng nhập, thu hồi token, buộc đổi PIN, xóa mềm/khôi phục, sao lưu/kiểm tra/phục hồi & đối soát điểm**, **chống khóa ADMIN từ xa**, **phiên bản cấu hình realtime** | **209/209 đạt** |
 | `tests/parity.test.js` (Node) | Đối chiếu **64 hành động API** và **13 hành động bump cấu hình** giữa `Code.gs` và `mock-api.js`, bảo đảm mock không lệch backend thật | **10/10 đạt** |
-| `tests/ui.test.js` (jsdom) | Đăng nhập C0–C4, nhãn đơn vị trên topbar, điều hướng tab, mở phiên QR, quét token, VietQR, E-Card, 360°, quiz, AI, SOS, **QR tạo cục bộ dạng data URL & UTF-8**, **buộc đổi mật khẩu/PIN & trung tâm điều hành 5 phân khu C0**, **sửa hồ sơ Chủ tịch / Bí thư Chi bộ Xã và đồng bộ Đơn vị**, **C0 mở đủ 9 tab, sửa/xóa mềm đoàn viên, chọn Ấp khi ghi chi, thùng rác, kiểm tra/phục hồi sao lưu**, **phân trang 50 + Xem thêm**, **cảnh báo ngoại tuyến**, **đồng bộ cấu hình realtime (topbar + hồ sơ)**, bắt lỗi JS | **113/113 đạt** |
+| `tests/ui.test.js` (jsdom) | Đăng nhập C0–C4, nhãn đơn vị trên topbar, điều hướng tab, mở phiên QR, quét token, VietQR, E-Card, 360°, quiz, AI, SOS, **QR tạo cục bộ dạng data URL & UTF-8**, **buộc đổi mật khẩu/PIN & trung tâm điều hành 5 phân khu C0**, **sửa hồ sơ Chủ tịch / Bí thư Chi bộ Xã và đồng bộ Đơn vị**, **C0 mở đủ 9 tab, sửa/xóa mềm đoàn viên, chọn Ấp khi ghi chi, thùng rác, kiểm tra/phục hồi sao lưu**, **phân trang 50 + Xem thêm**, **cảnh báo ngoại tuyến**, **đồng bộ cấu hình realtime (topbar + hồ sơ)**, **logo đúng theo từng Chi đoàn Ấp (topbar, thẻ, danh sách Ấp, tài khoản)**, bắt lỗi JS | **126/126 đạt** |
 
 Chạy lại sau khi sửa mã:
 

@@ -150,6 +150,8 @@ function screenText(dom) { return dom.window.document.querySelector('#screen').t
   const doc2 = dom2.window.document;
   ok(doc2.querySelectorAll('.nav-item').length === 8, 'Cấp 3 có 8 tab');
   ok(doc2.querySelector('.topbar').textContent.includes('Cấp 3 · Bí thư Chi đoàn Ấp · Chi đoàn Ấp Tân Xuân'), 'Topbar Cấp 3 hiển thị Chi đoàn Ấp');
+  const topLogo = doc2.querySelector('.topbar .avatar img');
+  ok(!!topLogo && /assets\/ap-logo\/ap01\.jpg$/.test(topLogo.getAttribute('src') || ''), 'Topbar Bí thư Ấp Tân Xuân dùng đúng logo AP01');
   await goto(dom2, 'attendance');
   const btnNew = doc2.querySelector('[data-act="new-session"]');
   ok(!!btnNew, 'Có nút mở phiên điểm danh');
@@ -203,6 +205,8 @@ function screenText(dom) { return dom.window.document.querySelector('#screen').t
   console.log('\n[7] Cấp 4: thẻ, 360°, quiz, SOS, AI');
   await goto(dom3, 'card');
   ok(!!doc3.querySelector('.e-card'), 'Thẻ E-Card render');
+  const cardLogo = doc3.querySelector('.e-card .e-card-logo');
+  ok(!!cardLogo && /assets\/ap-logo\/ap01\.jpg$/.test(cardLogo.getAttribute('src') || ''), 'Thẻ E-Card gắn đúng logo Chi đoàn Ấp');
   const cardTxt = doc3.querySelector('.e-card').textContent;
   const cardFields = ['Họ và tên', 'Ngày sinh', 'Chức vụ', 'Ngày vào Đoàn', 'Nơi vào Đoàn',
     'Nơi cấp thẻ', 'Ngày sinh hoạt đoàn', 'Số thẻ Đoàn viên'];
@@ -264,6 +268,7 @@ function screenText(dom) { return dom.window.document.querySelector('#screen').t
   ok(screenText(dom4).includes('Trung tâm điều hành'), 'Tiêu đề trung tâm điều hành');
   ok(doc4.querySelectorAll('.kpi').length >= 4, 'KPI quản trị hiển thị');
   ok(screenText(dom4).includes('Thông tin đơn vị cấp Xã') && screenText(dom4).includes('Chi đoàn Ấp'), 'Tab Đơn vị có thông tin Xã và danh sách Ấp');
+  ok(doc4.querySelectorAll('.sys-unit-logo').length === 11, 'Danh sách 11 Chi đoàn Ấp hiển thị đủ logo');
   const tenChuTich = doc4.querySelector('[name="BI_THU_XA"]');
   ok(!!tenChuTich && tenChuTich.value === 'Lê Văn Bình', 'Tab Đơn vị có tên Chủ tịch Ủy ban Hội LHTN Việt Nam Xã');
   ok(screenText(dom4).includes('cán bộ Cấp 1–3'), 'KPI ghi nhận cán bộ Cấp 1–3');
@@ -302,6 +307,8 @@ function screenText(dom) { return dom.window.document.querySelector('#screen').t
   doc4.querySelector('.sys-tab[data-tab="taiKhoan"]').click();
   await waitFor(() => doc4.querySelector('.sys-account'));
   ok(screenText(dom4).includes('ADMIN') && doc4.querySelectorAll('.sys-account').length > 5, 'Tab Tài khoản liệt kê tài khoản');
+  ok(doc4.querySelectorAll('.sys-account .li-avatar-logo').length >= 11 &&
+    !!doc4.querySelector('.sys-account img[src*="ap01.jpg"]'), 'Mỗi Bí thư Chi đoàn Ấp hiển thị đúng logo Ấp');
   ok(screenText(dom4).includes('Chủ Tịch') && screenText(dom4).includes('Cấp 1–3 cán bộ · Cấp 4 đoàn viên'), 'Danh sách tài khoản hiển thị mô hình C1–C4');
 
   const editCtBtn = doc4.querySelector('[data-sys-act="account-edit"][data-ma="CT_HOILHTN"]');

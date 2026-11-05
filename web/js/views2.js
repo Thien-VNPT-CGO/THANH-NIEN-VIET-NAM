@@ -25,10 +25,13 @@ VIEWS.card = async function () {
   var cardHTML =
     '<div class="e-card">' +
       '<div class="e-card-top">' +
-        '<div>' +
-          '<div class="e-card-label">Đoàn TNCS Hồ Chí Minh · ' + esc(c.tenXa) + '</div>' +
-          '<h3>' + esc(c.hoTen) + '</h3>' +
-          '<div class="e-role">' + esc(c.chucVu) + ' · ' + esc(c.tenAp) + '</div>' +
+        '<div class="e-card-id">' +
+          apLogoImg(c.maAp, 'e-card-logo') +
+          '<div>' +
+            '<div class="e-card-label">Đoàn TNCS Hồ Chí Minh · ' + esc(c.tenXa) + '</div>' +
+            '<h3>' + esc(c.hoTen) + '</h3>' +
+            '<div class="e-role">' + esc(c.chucVu) + ' · ' + esc(c.tenAp) + '</div>' +
+          '</div>' +
         '</div>' +
         '<div class="e-card-qr"><img src="' + qrImg('CD6CARD|' + c.maDD + '|' + c.maThe, 72) + '" alt="QR thẻ"></div>' +
       '</div>' +

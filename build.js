@@ -95,6 +95,27 @@ if (html.indexOf('vendor/leaflet.js') >= 0) {
 html = html.replace(/[ \t]*<!--[^>]*-->\s*<script src="mock-api\.js"><\/script>/, '');
 html = html.replace(/[ \t]*<script src="mock-api\.js"><\/script>\r?\n?/, '');
 
+// 3b. Nhúng logo Chi đoàn Ấp dạng data URI để bản Apps Script một tệp vẫn hiển thị được.
+const logoDir = path.join(webDir, 'assets', 'ap-logo');
+const logoMap = {};
+if (fs.existsSync(logoDir)) {
+  fs.readdirSync(logoDir).forEach((f) => {
+    const m = f.match(/^(ap\d+)\.(jpg|jpeg|png|webp)$/i);
+    if (!m) return;
+    const ext = m[2].toLowerCase();
+    const mime = ext === 'png' ? 'image/png' : ext === 'webp' ? 'image/webp' : 'image/jpeg';
+    logoMap[m[1].toUpperCase()] = 'data:' + mime + ';base64,' + fs.readFileSync(path.join(logoDir, f)).toString('base64');
+  });
+}
+html = html.replace(
+  '<script src="js/core.js"></script>',
+  () => '<script>window.AP_LOGO_DATA = ' + JSON.stringify(logoMap) + ';</script>\n<script src="js/core.js"></script>'
+);
+if (html.indexOf('window.AP_LOGO_DATA') < 0) {
+  console.error('✖ Không nhúng được logo Chi đoàn Ấp — kiểm tra web/index.html.');
+  process.exit(1);
+}
+
 // 4. Gộp toàn bộ JS ứng dụng
 const files = ['js/core.js', 'js/views.js', 'js/views2.js', 'js/system.js', 'js/actions.js', 'js/tour.js'];
 const bundle = files.map((f) => {

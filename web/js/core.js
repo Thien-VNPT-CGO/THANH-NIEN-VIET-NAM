@@ -55,6 +55,28 @@ function initials(name) {
   return (p[0][0] + (p.length > 1 ? p[p.length - 1][0] : '')).toUpperCase();
 }
 
+/* Logo Chi đoàn Ấp: dùng dữ liệu nhúng khi build Apps Script,
+   tự động quay về tệp cục bộ web/assets/ap-logo khi chạy xem trước. */
+var AP_LOGO_FILE = {
+  AP01: 'ap01.jpg', AP02: 'ap02.jpg', AP03: 'ap03.jpg', AP04: 'ap04.jpg',
+  AP05: 'ap05.jpg', AP06: 'ap06.jpg', AP07: 'ap07.jpg', AP08: 'ap08.jpg',
+  AP09: 'ap09.jpg', AP10: 'ap10.jpg', AP11: 'ap11.jpg'
+};
+function apLogoUrl(maAp) {
+  var key = String(maAp || '').toUpperCase();
+  var file = AP_LOGO_FILE[key];
+  if (!file) return '';
+  if (typeof window !== 'undefined' && window.AP_LOGO_DATA && window.AP_LOGO_DATA[key]) {
+    return window.AP_LOGO_DATA[key];
+  }
+  return 'assets/ap-logo/' + file;
+}
+function apLogoImg(maAp, cls) {
+  var src = apLogoUrl(maAp);
+  if (!src) return '';
+  return '<img class="' + cls + '" src="' + src + '" alt="Logo Chi đoàn Ấp">';
+}
+
 function capLabel(cap, tenAp) {
   var tenXa = (typeof S !== 'undefined' && S.config && S.config.tenXa) || 'Xã Tân Hòa';
   var donVi = tenAp || '';
@@ -269,9 +291,9 @@ function renderLogin() {
           '<button type="button" class="demo-chip" data-act="demo" data-ma="ADMIN" data-pass="ThanhnienvietnamXTH"><span class="badge badge-gold">C0</span><b>ADMIN</b> · Quản trị hệ thống</button>' +
           '<button type="button" class="demo-chip" data-act="demo" data-ma="CT_HOILHTN"><span class="badge badge-gold">C1</span><b>CT_HOILHTN</b> · Chủ Tịch Hội LHTN Xã</button>' +
           '<button type="button" class="demo-chip" data-act="demo" data-ma="BT_CHIBO_XA"><span class="badge badge-blue">C2</span><b>BT_CHIBO_XA</b> · Bí thư Chi bộ Xã</button>' +
-          '<button type="button" class="demo-chip" data-act="demo" data-ma="BT_AP01"><span class="badge badge-green">C3</span><b>BT_AP01</b> · Bí thư Chi đoàn Ấp Tân Xuân</button>' +
-          '<button type="button" class="demo-chip" data-act="demo" data-ma="BT_AP04"><span class="badge badge-green">C3</span><b>BT_AP04</b> · Bí thư Chi đoàn Ấp Hòa Bình</button>' +
-          '<button type="button" class="demo-chip" data-act="demo" data-ma="DV01"><span class="badge badge-green">C4</span><b>DV01</b> · Đoàn viên Võ Minh Khoa</button>' +
+          '<button type="button" class="demo-chip" data-act="demo" data-ma="BT_AP01">' + apLogoImg('AP01', 'demo-chip-logo') + '<span class="badge badge-green">C3</span><b>BT_AP01</b> · Bí thư Chi đoàn Ấp Tân Xuân</button>' +
+          '<button type="button" class="demo-chip" data-act="demo" data-ma="BT_AP04">' + apLogoImg('AP04', 'demo-chip-logo') + '<span class="badge badge-green">C3</span><b>BT_AP04</b> · Bí thư Chi đoàn Ấp Hòa Bình</button>' +
+          '<button type="button" class="demo-chip" data-act="demo" data-ma="DV01">' + apLogoImg('AP01', 'demo-chip-logo') + '<span class="badge badge-green">C4</span><b>DV01</b> · Đoàn viên Võ Minh Khoa</button>' +
           '</div>'
         : '') +
       '<p class="small muted center mt-12">Quên PIN? <a href="#" data-act="forgot-pin">Gửi yêu cầu cấp lại</a> — mã mới chỉ hiển thị cho Cấp 0 / Cấp 1 / Cấp 2.</p>' +
@@ -605,6 +627,7 @@ var NAV = [
 function topbar() {
   var m = S.me;
   var admin = m.cap === 0;
+  var apLogo = apLogoImg(m.maAp, 'avatar-img');
   return '<header class="topbar"><div class="topbar-inner">' +
     '<div class="brand-line">' +
       '<div class="brand">' +
@@ -619,7 +642,7 @@ function topbar() {
       '</div>' +
     '</div>' +
     '<div class="user-strip">' +
-      '<div class="avatar">' + esc(initials(m.hoTen)) + '</div>' +
+      '<div class="avatar' + (apLogo ? ' avatar-logo' : '') + '">' + (apLogo || esc(initials(m.hoTen))) + '</div>' +
       '<div class="user-meta"><b>' + esc(m.hoTen) + '</b><span>' + esc(capLabel(m.cap, m.tenAp)) + '</span></div>' +
       (admin ? '<div class="points-pill admin-pill">' + icon('shield', 13) + ' C0</div>'
         : '<div class="points-pill">' + icon('star', 13) + ' ' + m.diem + ' <small>điểm</small></div>') +

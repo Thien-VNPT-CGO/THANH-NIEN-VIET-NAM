@@ -163,6 +163,7 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
 }
 .demo-chip:hover { border-color: var(--red-2); color: var(--red); transform: translateX(2px); }
 .demo-chip b { color: var(--ink); }
+.demo-chip-logo { width: 22px; height: 22px; flex: none; border-radius: 50%; object-fit: cover; background: #fff; }
 
 /* ---------------------------------------------------------------- */
 /* KHUNG ỨNG DỤNG                                                    */
@@ -217,6 +218,8 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
   display: grid; place-items: center;
   box-shadow: 0 6px 14px rgba(0, 0, 0, .18);
 }
+.avatar-logo { background: #fff; padding: 0; overflow: hidden; border-radius: 50%; }
+.avatar-logo .avatar-img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .user-meta { min-width: 0; flex: 1; }
 .user-meta b { display: block; font-size: 15px; }
 .user-meta span { font-size: 11.5px; color: rgba(255, 255, 255, .82); }
@@ -351,6 +354,8 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
 }
 .li-avatar.red { background: var(--red-soft); color: var(--red); }
 .li-avatar.green { background: var(--green-soft); color: var(--green); }
+.li-avatar-logo { background: #fff; padding: 0; overflow: hidden; border-radius: 50%; }
+.li-avatar-logo .li-avatar-img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .li-main { flex: 1; min-width: 0; }
 .li-main b { display: block; font-size: 13.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .li-main span { display: block; font-size: 11.5px; color: var(--muted); }
@@ -471,6 +476,8 @@ table.tb td b { font-weight: 650; }
 .e-card .e-role { font-size: 11.5px; color: rgba(255, 255, 255, .85); }
 .e-card-qr { background: #fff; padding: 5px; border-radius: 9px; flex: none; box-shadow: 0 6px 16px rgba(60, 0, 4, .25); }
 .e-card-qr img { display: block; width: 72px; height: 72px; }
+.e-card-id { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.e-card-logo { width: 54px; height: 54px; flex: none; border-radius: 50%; object-fit: cover; background: #fff; box-shadow: 0 6px 16px rgba(60, 0, 4, .25); }
 .e-card-fields {
   position: relative; z-index: 1; margin-top: 16px;
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px 14px;
@@ -641,6 +648,9 @@ table.tb td b { font-weight: 650; }
 .sys-unit { border: 1px solid var(--line); border-radius: 14px; padding: 12px; background: #FCFDFF; }
 .sys-unit-hd { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
 .sys-unit-hd > div:first-child { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.sys-unit-id { flex-wrap: nowrap !important; min-width: 0; }
+.sys-unit-id > div { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; min-width: 0; }
+.sys-unit-logo { width: 38px; height: 38px; flex: none; border-radius: 50%; object-fit: cover; background: #fff; border: 1px solid var(--line); }
 .sys-unit-meta { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 11.5px; color: var(--muted); margin-top: 8px; }
 .sys-unit-meta b { color: var(--ink); }
 .sys-accounts { display: grid; gap: 8px; }

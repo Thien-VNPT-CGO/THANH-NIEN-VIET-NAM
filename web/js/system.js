@@ -193,8 +193,11 @@ function sysUnitPanel(aps) {
     '<button class="btn btn-primary btn-sm" data-sys-act="ap-new">' + icon('plus', 14) + ' Thêm Ấp</button></div>' +
     (aps.length ? '<div class="sys-units">' + aps.map(function (a) {
       return '<div class="sys-unit">' +
-        '<div class="sys-unit-hd"><div><b>' + esc(a.tenAp) + '</b>' +
+        '<div class="sys-unit-hd"><div class="sys-unit-id">' +
+          apLogoImg(a.maAp, 'sys-unit-logo') +
+          '<div><b>' + esc(a.tenAp) + '</b>' +
           '<span class="badge badge-blue">' + esc(a.maAp) + '</span></div>' +
+        '</div>' +
           '<div class="row" style="gap:5px">' +
             '<button class="btn btn-ghost btn-sm" data-sys-act="ap-edit" data-ma="' + esc(a.maAp) + '">Sửa</button>' +
             '<button class="btn btn-danger btn-sm" data-sys-act="ap-delete" data-ma="' + esc(a.maAp) + '">Xóa</button>' +
@@ -261,9 +264,10 @@ function sysAccountPanel(accounts, q, trashMode, trashCount) {
   var rows = accounts.map(function (a) {
     var capTone = roleTone(a.cap);
     var locked = a.trangThai === 'Tạm khóa';
+    var apLogo = apLogoImg(a.maAp, 'li-avatar-img');
     return '<div class="sys-account">' +
       '<div class="sys-account-main">' +
-        '<div class="li-avatar ' + (a.cap <= 1 ? 'red' : '') + '">' + esc(initials(a.hoTen)) + '</div>' +
+        '<div class="li-avatar' + (apLogo ? ' li-avatar-logo' : (a.cap <= 1 ? ' red' : '')) + '">' + (apLogo || esc(initials(a.hoTen))) + '</div>' +
         '<div class="li-main"><b>' + esc(a.hoTen) + '</b>' +
           '<span>' + esc(a.maDD) + ' · ' + esc(a.chucVu) + '</span>' +
           '<span>' + esc(a.tenAp) + ' · ' + esc(a.dienThoai || 'Chưa có SĐT') + '</span></div>' +
