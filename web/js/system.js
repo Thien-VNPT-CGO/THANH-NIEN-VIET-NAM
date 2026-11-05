@@ -527,7 +527,7 @@ function sysApModal(ap) {
     body: '<form data-sys-form="ap">' +
       (ap ? '<input type="hidden" name="maAp" value="' + esc(ap.maAp) + '">' : '') +
       '<div class="field"><label>Tên Ấp / Chi đoàn Ấp</label>' +
-        '<input class="input" name="tenAp" value="' + esc(ap ? ap.tenAp : '') + '" required placeholder="VD: Ấp Tân Bình"></div>' +
+        '<input class="input" name="tenAp" value="' + esc(ap ? ap.tenAp : '') + '" required placeholder="VD: Ấp Tân Xuân"></div>' +
       '<div class="field"><label>Bí thư Chi đoàn Ấp</label><select class="input" name="biThu">' + biThuOptions + '</select></div>' +
       '<div class="field"><label>Chỉ tiêu đoàn viên</label>' +
         '<input class="input" name="chiTieu" type="number" min="0" step="1" value="' + esc(ap ? ap.chiTieu : 0) + '"></div>' +

@@ -11,7 +11,7 @@ Toàn bộ hệ thống chạy trên hạ tầng Google (không cần máy chủ
 | Hạng mục | Giá trị |
 |---|---|
 | Tên hệ thống | Hệ sinh thái Chi đoàn số 6.0 |
-| Đơn vị | Xã Tân Hòa — 4 Ấp: Tân Bình (AP01), Tân Lập (AP02), Tân Phú (AP03), Hòa Bình (AP04) |
+| Đơn vị | Xã Tân Hòa — 11 Ấp: Tân Xuân (AP01), Nghĩa Chí (AP02), Dương Hòa (AP03), Hòa Bình (AP04), Hiệp Trị (AP05), Xóm Gò (AP06), Vạn Thành (AP07), Thạnh Hòa (AP08), Dương Phú (AP09), Lò Gạch (AP10), Ruộng Cạn (AP11) |
 | Nền tảng | Google Sheets (CSDL) + Google Apps Script (API) + HTML/CSS/JS (giao diện) |
 | Xác thực | Mã định danh / SĐT + **PIN 6 số** (C1–C4); tài khoản **ADMIN** dùng mật khẩu chữ, phiên đăng nhập 12 giờ |
 | Phân quyền | 5 cấp: **C0 Quản trị hệ thống** · **C1 Chủ tịch Ủy Ban Hội LHTN Việt Nam Xã** · **C2 Bí thư Chi bộ Xã** · **C3 Bí thư Chi đoàn Ấp** · **C4 Đoàn viên Ấp** |
@@ -46,7 +46,7 @@ Toàn bộ hệ thống chạy trên hạ tầng Google (không cần máy chủ
 
 **Quy tắc ủy quyền 24h:** Bí thư Chi đoàn Ấp (C3) có thể ủy quyền cho cán bộ/đoàn viên cùng Ấp trong tối đa 24 giờ (`auth.delegate`). Hết hạn, quyền tự động thu hồi.
 
-**Nhãn đơn vị hiển thị:** topbar, hồ sơ và thẻ luôn dùng tên đầy đủ — C0: `Cấp 0 · Quản trị hệ thống · Toàn hệ thống`; C1: `Cấp 1 · Ủy Ban Hội LHTN Việt Nam Xã Tân Hòa · Chủ Tịch`; C2: `Cấp 2 · Bí thư Chi bộ Xã · Chi bộ Xã Tân Hòa`; C3/C4: `Cấp 3/4 · … · Chi đoàn Ấp …` (ví dụ `Chi đoàn Ấp Tân Bình`). Tên Xã lấy từ cấu hình `TEN_XA`.
+**Nhãn đơn vị hiển thị:** topbar, hồ sơ và thẻ luôn dùng tên đầy đủ — C0: `Cấp 0 · Quản trị hệ thống · Toàn hệ thống`; C1: `Cấp 1 · Ủy Ban Hội LHTN Việt Nam Xã Tân Hòa · Chủ Tịch`; C2: `Cấp 2 · Bí thư Chi bộ Xã · Chi bộ Xã Tân Hòa`; C3/C4: `Cấp 3/4 · … · Chi đoàn Ấp …` (ví dụ `Chi đoàn Ấp Tân Xuân`). Tên Xã lấy từ cấu hình `TEN_XA`.
 
 ### Trung tâm điều hành Cấp 0
 
@@ -198,13 +198,20 @@ Mật khẩu/PIN chung cho tài khoản nghiệp vụ: **`123456`**
 | `ADMIN` | Quản trị viên hệ thống | C0 · Quản trị hệ thống | — | 0 |
 | `CT_HOILHTN` | Lê Văn Bình | C1 · Chủ tịch Hội LHTN Xã | — | 0 |
 | `BT_CHIBO_XA` | Nguyễn Văn Hòa | C2 · Bí thư Chi bộ Xã | — | 0 |
-| `BT_AP01` | Trần Thị Mai | C3 · Bí thư Chi đoàn Ấp | Tân Bình | 260 |
-| `BT_AP02` | Lê Quốc Bảo | C3 · Bí thư Chi đoàn Ấp | Tân Lập | 240 |
-| `BT_AP03` | Phạm Ngọc Lan | C3 · Bí thư Chi đoàn Ấp | Tân Phú | 215 |
+| `BT_AP01` | Lê Huỳnh Ngọc Hằng | C3 · Bí thư Chi đoàn Ấp | Tân Xuân | 0 |
+| `BT_AP02` | Nguyễn Kim Chi | C3 · Bí thư Chi đoàn Ấp | Nghĩa Chí | 0 |
+| `BT_AP03` | Lê Thị Cẩm Kha | C3 · Bí thư Chi đoàn Ấp | Dương Hòa | 0 |
 | `BT_AP04` | Nguyễn Thanh Thiên | C3 · Bí thư Chi đoàn Ấp | Hòa Bình | 0 |
-| `DV01` | Võ Minh Khoa | C4 · Đoàn viên Ấp | Tân Bình | 340 |
-| `DV02` | Nguyễn Thị Thu Hà | C4 · Đoàn viên Ấp | Tân Bình | 285 |
-| `DV05` | Đặng Quốc Huy | C4 · Đoàn viên Ấp | Tân Lập | 310 |
+| `BT_AP05` | Huỳnh Hải Vy | C3 · Bí thư Chi đoàn Ấp | Hiệp Trị | 0 |
+| `BT_AP06` | Huỳnh Nguyễn Thảo Hiền | C3 · Bí thư Chi đoàn Ấp | Xóm Gò | 0 |
+| `BT_AP07` | Phan Nguyên Kha | C3 · Bí thư Chi đoàn Ấp | Vạn Thành | 0 |
+| `BT_AP08` | Từ Nguyễn Quốc Tiến | C3 · Bí thư Chi đoàn Ấp | Thạnh Hòa | 0 |
+| `BT_AP09` | Đặng Nhật Khánh Vy | C3 · Bí thư Chi đoàn Ấp | Dương Phú | 0 |
+| `BT_AP10` | Lê Hoàng Nhân | C3 · Bí thư Chi đoàn Ấp | Lò Gạch | 0 |
+| `BT_AP11` | Lê Thị Bích Hồng | C3 · Bí thư Chi đoàn Ấp | Ruộng Cạn | 0 |
+| `DV01` | Võ Minh Khoa | C4 · Đoàn viên Ấp | Tân Xuân | 340 |
+| `DV02` | Nguyễn Thị Thu Hà | C4 · Đoàn viên Ấp | Tân Xuân | 285 |
+| `DV05` | Đặng Quốc Huy | C4 · Đoàn viên Ấp | Nghĩa Chí | 310 |
 
 Ngoài ra có `DV03`, `DV04`, `DV06`… với điểm thấp hơn để thử luồng cảnh báo.
 
@@ -219,7 +226,7 @@ Ngoài ra có `DV03`, `DV04`, `DV06`… với điểm thấp hơn để thử lu
 | Nhóm | Sheet | Nội dung |
 |---|---|---|
 | Cấu hình | `CauHinh` | Tham số hệ thống (tên xã, năm, mục tiêu điểm, ngân hàng VietQR…), `PHIEN_BAN_CAU_HINH` cho đồng bộ realtime |
-| Danh mục | `DM_Ap`, `DM_CanBo` | 4 Ấp; hồ sơ cán bộ/Đoàn viên (PIN băm, điểm, điểm nền, thẻ, ủy quyền, khóa đăng nhập, `TokenVersion`, xóa mềm, `MatKhauHash` cho ADMIN) |
+| Danh mục | `DM_Ap`, `DM_CanBo` | 11 Ấp; hồ sơ cán bộ/Đoàn viên (PIN băm, điểm, điểm nền, thẻ, ủy quyền, khóa đăng nhập, `TokenVersion`, xóa mềm, `MatKhauHash` cho ADMIN) |
 | Điểm danh | `QR_Phien`, `DiemDanh` | Phiên điểm danh, token QR, lịch sử quét |
 | Ươm mầm Đỏ | `UomMamDo` | Đề cử, tiêu chí, trạng thái duyệt |
 | Tài chính | `DoanPhi`, `Quy_ThuChi` | Giao dịch đoàn phí, sổ thu–chi công khai |

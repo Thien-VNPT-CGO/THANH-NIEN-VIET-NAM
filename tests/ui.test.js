@@ -149,7 +149,7 @@ function screenText(dom) { return dom.window.document.querySelector('#screen').t
   await login(dom2, 'BT_AP01');
   const doc2 = dom2.window.document;
   ok(doc2.querySelectorAll('.nav-item').length === 8, 'Cấp 3 có 8 tab');
-  ok(doc2.querySelector('.topbar').textContent.includes('Cấp 3 · Bí thư Chi đoàn Ấp · Chi đoàn Ấp Tân Bình'), 'Topbar Cấp 3 hiển thị Chi đoàn Ấp');
+  ok(doc2.querySelector('.topbar').textContent.includes('Cấp 3 · Bí thư Chi đoàn Ấp · Chi đoàn Ấp Tân Xuân'), 'Topbar Cấp 3 hiển thị Chi đoàn Ấp');
   await goto(dom2, 'attendance');
   const btnNew = doc2.querySelector('[data-act="new-session"]');
   ok(!!btnNew, 'Có nút mở phiên điểm danh');
@@ -177,7 +177,7 @@ function screenText(dom) { return dom.window.document.querySelector('#screen').t
   await login(dom3, 'DV01');
   const doc3 = dom3.window.document;
   ok(doc3.querySelectorAll('.nav-item').length === 7, 'Cấp 4 có 7 tab (không có Quản trị)');
-  ok(doc3.querySelector('.topbar').textContent.includes('Cấp 4 · Đoàn viên Ấp · Chi đoàn Ấp Tân Bình'), 'Topbar Cấp 4 hiển thị Chi đoàn Ấp');
+  ok(doc3.querySelector('.topbar').textContent.includes('Cấp 4 · Đoàn viên Ấp · Chi đoàn Ấp Tân Xuân'), 'Topbar Cấp 4 hiển thị Chi đoàn Ấp');
   await goto(dom3, 'attendance');
   const live = dom3.window.localStorage.getItem(DB_KEY);
   const openSes = JSON.parse(live).sessions.filter(s => s.TrangThai === 'Đang mở')[0];

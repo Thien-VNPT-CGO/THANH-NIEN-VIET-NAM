@@ -4017,7 +4017,7 @@ function renderLogin() {
           '<button type="button" class="demo-chip" data-act="demo" data-ma="ADMIN" data-pass="ThanhnienvietnamXTH"><span class="badge badge-gold">C0</span><b>ADMIN</b> · Quản trị hệ thống</button>' +
           '<button type="button" class="demo-chip" data-act="demo" data-ma="CT_HOILHTN"><span class="badge badge-gold">C1</span><b>CT_HOILHTN</b> · Chủ Tịch Hội LHTN Xã</button>' +
           '<button type="button" class="demo-chip" data-act="demo" data-ma="BT_CHIBO_XA"><span class="badge badge-blue">C2</span><b>BT_CHIBO_XA</b> · Bí thư Chi bộ Xã</button>' +
-          '<button type="button" class="demo-chip" data-act="demo" data-ma="BT_AP01"><span class="badge badge-green">C3</span><b>BT_AP01</b> · Bí thư Chi đoàn Ấp Tân Bình</button>' +
+          '<button type="button" class="demo-chip" data-act="demo" data-ma="BT_AP01"><span class="badge badge-green">C3</span><b>BT_AP01</b> · Bí thư Chi đoàn Ấp Tân Xuân</button>' +
           '<button type="button" class="demo-chip" data-act="demo" data-ma="BT_AP04"><span class="badge badge-green">C3</span><b>BT_AP04</b> · Bí thư Chi đoàn Ấp Hòa Bình</button>' +
           '<button type="button" class="demo-chip" data-act="demo" data-ma="DV01"><span class="badge badge-green">C4</span><b>DV01</b> · Đoàn viên Võ Minh Khoa</button>' +
           '</div>'
@@ -5923,7 +5923,7 @@ function sysApModal(ap) {
     body: '<form data-sys-form="ap">' +
       (ap ? '<input type="hidden" name="maAp" value="' + esc(ap.maAp) + '">' : '') +
       '<div class="field"><label>Tên Ấp / Chi đoàn Ấp</label>' +
-        '<input class="input" name="tenAp" value="' + esc(ap ? ap.tenAp : '') + '" required placeholder="VD: Ấp Tân Bình"></div>' +
+        '<input class="input" name="tenAp" value="' + esc(ap ? ap.tenAp : '') + '" required placeholder="VD: Ấp Tân Xuân"></div>' +
       '<div class="field"><label>Bí thư Chi đoàn Ấp</label><select class="input" name="biThu">' + biThuOptions + '</select></div>' +
       '<div class="field"><label>Chỉ tiêu đoàn viên</label>' +
         '<input class="input" name="chiTieu" type="number" min="0" step="1" value="' + esc(ap ? ap.chiTieu : 0) + '"></div>' +

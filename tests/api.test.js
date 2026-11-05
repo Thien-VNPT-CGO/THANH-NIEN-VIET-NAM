@@ -29,14 +29,14 @@ async function expectError(p, title) {
   ok(c3.profile.cap === 4, 'Cấp 4 (Đoàn viên Ấp) đăng nhập');
   ok(ct.profile.tenAp === 'Ủy Ban Hội LHTN Việt Nam Xã Tân Hòa', 'Cấp 1 hiển thị đơn vị Hội LHTN Xã');
   ok(c1.profile.tenAp === 'Chi bộ Xã Tân Hòa', 'Cấp 2 hiển thị đơn vị Chi bộ Xã');
-  ok(c2.profile.tenAp === 'Chi đoàn Ấp Tân Bình' && c3.profile.tenAp === 'Chi đoàn Ấp Tân Bình', 'Cấp 3/4 hiển thị Chi đoàn Ấp đầy đủ');
+  ok(c2.profile.tenAp === 'Chi đoàn Ấp Tân Xuân' && c3.profile.tenAp === 'Chi đoàn Ấp Tân Xuân', 'Cấp 3/4 hiển thị Chi đoàn Ấp đầy đủ');
   await expectError(api.call('auth.login', { maDD: 'DV01', pin: '000000' }), 'Sai PIN bị chặn');
 
   console.log('\n[2] Dashboard theo phạm vi');
   const h1 = await api.call('home.summary', {}, ct.token);
-  ok(h1.kpi.length === 4 && h1.apStats.length === 4, 'Cấp 1 thấy KPI + toàn bộ 4 Ấp');
+  ok(h1.kpi.length === 4 && h1.apStats.length === 11, 'Cấp 1 thấy KPI + toàn bộ 11 Ấp');
   const h2 = await api.call('home.summary', {}, c1.token);
-  ok(h2.apStats.length === 4, 'Cấp 2 (Bí thư Chi bộ Xã) thấy toàn bộ 4 Ấp');
+  ok(h2.apStats.length === 11, 'Cấp 2 (Bí thư Chi bộ Xã) thấy toàn bộ 11 Ấp');
   const h3 = await api.call('home.summary', {}, c2.token);
   ok(h3.apStats.length === 1, 'Cấp 3 chỉ thấy Ấp mình');
   const h4 = await api.call('home.summary', {}, c3.token);
@@ -83,7 +83,7 @@ async function expectError(p, title) {
   const sum = await api.call('fee.summary', {}, c2.token);
   ok(sum.pending.length >= 1 && sum.stats.length === 1, 'Giao dịch vào hàng chờ của Ấp');
   const sumXa = await api.call('fee.summary', {}, c1.token);
-  ok(sumXa.stats.length === 4, 'Cấp 2 thấy Sổ quỹ toàn Xã');
+  ok(sumXa.stats.length === 11, 'Cấp 2 thấy Sổ quỹ toàn Xã');
   const c2b = await api.call('auth.login', { maDD: 'BT_AP02', pin: '123456' });
   await expectError(api.call('fee.confirm', { maGiaoDich: pay.maGiaoDich }, c2b.token), 'Cấp 3 Ấp khác không được xác nhận');
   const cf = await api.call('fee.confirm', { maGiaoDich: pay.maGiaoDich }, c2.token);
@@ -103,9 +103,9 @@ async function expectError(p, title) {
   const card = await api.call('card.get', {}, c3.token);
   ok(card.maThe === 'TDV-2026-AP01-01', 'Thẻ đã tích hợp');
   ok(card.ngaySinh === '08/05/2003' && card.chucVu === 'Đoàn viên', 'Thẻ có ngày sinh và chức vụ');
-  ok(card.ngayVaoDoan === '26/03/2021' && card.noiVaoDoan === 'Chi đoàn Ấp Tân Bình', 'Thẻ có ngày vào và nơi vào Đoàn');
+  ok(card.ngayVaoDoan === '26/03/2021' && card.noiVaoDoan === 'Chi đoàn Ấp Tân Xuân', 'Thẻ có ngày vào và nơi vào Đoàn');
   ok(card.noiCapThe === 'Ban Chấp hành Chi đoàn Xã Tân Hòa', 'Thẻ có nơi cấp thẻ');
-  ok(card.tenAp === 'Chi đoàn Ấp Tân Bình', 'Thẻ hiển thị đơn vị đầy đủ');
+  ok(card.tenAp === 'Chi đoàn Ấp Tân Xuân', 'Thẻ hiển thị đơn vị đầy đủ');
   ok(card.ngaySinhHoatDoan === 'Ngày 25 hằng tháng', 'Thẻ có ngày sinh hoạt đoàn');
   const cert = await api.call('cert.issue', { loai: 'Giấy chứng nhận tình nguyện hè' }, c3.token);
   ok(cert.chuKySo.length >= 16, 'Cấp E-Cert có chữ ký số');
@@ -114,7 +114,7 @@ async function expectError(p, title) {
   const issue = await api.call('card.issue', { maDD: 'DV03' }, c2.token);
   ok(issue.tongDiem > 0, 'Cấp 3 tích hợp thẻ +20 điểm');
   const card3 = await api.call('card.get', { maDD: 'DV03' }, c2.token);
-  ok(card3.noiCapThe === 'Ban Chấp hành Chi đoàn Ấp Tân Bình', 'Nơi cấp thẻ theo thẩm quyền Bí thư Chi đoàn Ấp');
+  ok(card3.noiCapThe === 'Ban Chấp hành Chi đoàn Ấp Tân Xuân', 'Nơi cấp thẻ theo thẩm quyền Bí thư Chi đoàn Ấp');
   await expectError(api.call('card.issue', { maDD: 'DV02' }, c3.token), 'Cấp 4 không được cấp thẻ');
   const issueXa = await api.call('card.issue', { maDD: 'DV04' }, c1.token);
   ok(issueXa.tongDiem > 0, 'Cấp 2 cấp thẻ cho Ấp bất kỳ');
@@ -143,7 +143,7 @@ async function expectError(p, title) {
   ok(ans.dung === true && ans.diem === 15, 'Trả lời đúng +15 điểm');
   await expectError(api.call('quiz.answer', { maCau: 'Q01', dapAn: 'B' }, c3.token), 'Chống trả lời lại');
   const lb = await api.call('leaderboard', {}, c3.token);
-  ok(lb.top.length > 0 && lb.aps.length === 4, 'Bảng xếp hạng cá nhân + Ấp');
+  ok(lb.top.length > 0 && lb.aps.length === 11, 'Bảng xếp hạng cá nhân + Ấp');
 
   console.log('\n[9] Trợ lý AI');
   const bot = await api.call('bot.ask', { text: 'DIEM DV01' }, c3.token);
@@ -154,7 +154,7 @@ async function expectError(p, title) {
   ok(!!warn.reply, 'Cảnh báo vắng > 60 ngày');
   const script = await api.call('bot.script', { noiDung: 'Đổi mới tập hợp đoàn viên', thoiLuong: 45 }, c2.token);
   ok(script.noiDung.indexOf('KỊCH BẢN') === 0, 'Sinh kịch bản họp');
-  ok(script.noiDung.indexOf('Đơn vị: Chi đoàn Ấp Tân Bình — Xã Tân Hòa') >= 0, 'Kịch bản ghi đơn vị đầy đủ');
+  ok(script.noiDung.indexOf('Đơn vị: Chi đoàn Ấp Tân Xuân — Xã Tân Hòa') >= 0, 'Kịch bản ghi đơn vị đầy đủ');
   const scriptXa = await api.call('bot.script', { noiDung: 'Họp Chi bộ', thoiLuong: 45 }, c1.token);
   ok(scriptXa.noiDung.indexOf('Đơn vị: Chi bộ Xã Tân Hòa') >= 0, 'Kịch bản cấp Xã ghi đơn vị Chi bộ Xã');
   const scriptCt = await api.call('bot.script', { noiDung: 'Họp Hội LHTN', thoiLuong: 45 }, ct.token);
@@ -205,20 +205,20 @@ async function expectError(p, title) {
   ok(!!adSoft.token, 'ADMIN vẫn đăng nhập được sau 5 lần sai (không bị khóa cứng từ xa)');
 
   const admSum = await api.call('admin.summary', {}, ad2.token);
-  ok(admSum.soAp === 4 && admSum.soDoanVien >= 13, 'Tổng quan: 4 Ấp và đủ đoàn viên');
-  ok(admSum.soCanBo === 6, 'Tổng quan: 6 cán bộ Cấp 1–3');
+  ok(admSum.soAp === 11 && admSum.soDoanVien >= 13, 'Tổng quan: 11 Ấp và đủ đoàn viên');
+  ok(admSum.soCanBo === 13, 'Tổng quan: 13 cán bộ Cấp 1–3');
   const aps = await api.call('admin.ap.list', {}, ad2.token);
-  ok(aps.items.length === 4 && aps.items[0].soDoanVien > 0, 'Danh sách Ấp kèm số đoàn viên');
+  ok(aps.items.length === 11 && aps.items[0].soDoanVien > 0, 'Danh sách Ấp kèm số đoàn viên');
 
   const newAp = await api.call('admin.ap.save', { tenAp: 'Ấp Tân Thới', chiTieu: 30 }, ad2.token);
-  ok(newAp.maAp === 'AP05', 'Thêm Ấp mới, mã tự tăng');
+  ok(newAp.maAp === 'AP12', 'Thêm Ấp mới, mã tự tăng');
   await expectError(api.call('admin.ap.delete', { maAp: 'AP01' }, ad2.token), 'Không xóa Ấp còn tài khoản');
-  await api.call('admin.ap.save', { maAp: 'AP05', tenAp: 'Ấp Tân Thới', chiTieu: 35 }, ad2.token);
+  await api.call('admin.ap.save', { maAp: 'AP12', tenAp: 'Ấp Tân Thới', chiTieu: 35 }, ad2.token);
   const aps2 = await api.call('admin.ap.list', {}, ad2.token);
-  ok(aps2.items.filter(a => a.maAp === 'AP05')[0].chiTieu === 35, 'Cập nhật thông tin Ấp');
-  await api.call('admin.ap.delete', { maAp: 'AP05' }, ad2.token);
+  ok(aps2.items.filter(a => a.maAp === 'AP12')[0].chiTieu === 35, 'Cập nhật thông tin Ấp');
+  await api.call('admin.ap.delete', { maAp: 'AP12' }, ad2.token);
   const aps3 = await api.call('admin.ap.list', {}, ad2.token);
-  ok(aps3.items.length === 4, 'Xóa Ấp khi không còn tài khoản');
+  ok(aps3.items.length === 11, 'Xóa Ấp khi không còn tài khoản');
 
   const cfgList = await api.call('admin.config.list', {}, ad2.token);
   ok(cfgList.items.some(i => i.khoa === 'DIEM_SOS' && i.giaTri === 10), 'Đọc cấu hình điểm');
@@ -267,16 +267,16 @@ async function expectError(p, title) {
   await expectError(api.call('admin.account.status', { maDD: 'BT_CHIBO_XA', trangThai: 'Tạm khóa' }, ad2.token), 'Không khóa Bí thư Chi bộ Xã cuối cùng');
 
   const acc = await api.call('admin.account.create', {
-    maDD: 'BT_AP09', hoTen: 'Nguyễn Bí Thư', cap: 3, maAp: 'AP02'
+    maDD: 'BT_AP20', hoTen: 'Nguyễn Bí Thư', cap: 3, maAp: 'AP02'
   }, ad2.token);
-  ok(acc.maDD === 'BT_AP09', 'Tạo tài khoản Cấp 3');
-  const accRow = (await api.call('admin.account.list', { q: 'BT_AP09' }, ad2.token)).items[0];
-  ok(accRow.chucVu === 'Bí thư Chi đoàn Ấp Tân Lập', 'Cấp 3 tự sinh chức vụ theo Ấp');
+  ok(acc.maDD === 'BT_AP20', 'Tạo tài khoản Cấp 3');
+  const accRow = (await api.call('admin.account.list', { q: 'BT_AP20' }, ad2.token)).items[0];
+  ok(accRow.chucVu === 'Bí thư Chi đoàn Ấp Nghĩa Chí', 'Cấp 3 tự sinh chức vụ theo Ấp');
   await expectError(api.call('admin.account.create', {
-    maDD: 'BT_AP09', hoTen: 'Trùng Mã', cap: 3, maAp: 'AP02'
+    maDD: 'BT_AP20', hoTen: 'Trùng Mã', cap: 3, maAp: 'AP02'
   }, ad2.token), 'Chặn trùng mã định danh');
   await expectError(api.call('admin.account.create', {
-    maDD: 'BT_AP10', hoTen: 'Thiếu Ấp', cap: 3
+    maDD: 'BT_AP21', hoTen: 'Thiếu Ấp', cap: 3
   }, ad2.token), 'Cấp 3/4 bắt buộc chọn Ấp');
   const accCt = await api.call('admin.account.create', {
     maDD: 'CT_XA2', hoTen: 'Phó Chủ tịch Hội', cap: 1
@@ -291,11 +291,11 @@ async function expectError(p, title) {
   const accXaRow = (await api.call('admin.account.list', { q: 'BT_XA2' }, ad2.token)).items[0];
   ok(accXaRow.maAp === '', 'Cấp 2 không gắn Ấp dù payload có maAp');
 
-  await api.call('admin.account.status', { maDD: 'BT_AP09', trangThai: 'Tạm khóa' }, ad2.token);
-  const accLock = (await api.call('admin.account.list', { q: 'BT_AP09' }, ad2.token)).items[0];
+  await api.call('admin.account.status', { maDD: 'BT_AP20', trangThai: 'Tạm khóa' }, ad2.token);
+  const accLock = (await api.call('admin.account.list', { q: 'BT_AP20' }, ad2.token)).items[0];
   ok(accLock.trangThai === 'Tạm khóa', 'Khóa tài khoản');
-  await api.call('admin.account.status', { maDD: 'BT_AP09', trangThai: 'Đang hoạt động' }, ad2.token);
-  const pinR = await api.call('admin.account.resetPin', { maDD: 'BT_AP09' }, ad2.token);
+  await api.call('admin.account.status', { maDD: 'BT_AP20', trangThai: 'Đang hoạt động' }, ad2.token);
+  const pinR = await api.call('admin.account.resetPin', { maDD: 'BT_AP20' }, ad2.token);
   ok(/^\d{6}$/.test(pinR.pin), 'Cấp lại PIN 6 số');
   await expectError(api.call('admin.account.status', { maDD: 'ADMIN', trangThai: 'Tạm khóa' }, ad2.token), 'Không khóa được tài khoản Admin');
   const logs = await api.call('admin.logs', { q: 'Ấp', limit: 50 }, ad2.token);
@@ -306,7 +306,7 @@ async function expectError(p, title) {
   const aDis = await api.call('attendance.list', {}, ad2.token);
   ok(aDis.items.length >= 12, 'Admin xem điểm danh toàn Xã');
   const aFee = await api.call('fee.summary', {}, ad2.token);
-  ok(aFee.stats.length === 4, 'Admin xem Sổ quỹ toàn Xã');
+  ok(aFee.stats.length === 11, 'Admin xem Sổ quỹ toàn Xã');
   const aCard = await api.call('card.list', {}, ad2.token);
   ok(aCard.items.length >= 12, 'Admin thấy danh sách thẻ toàn Xã');
   const aUm = await api.call('uommam.list', {}, ad2.token);
@@ -361,7 +361,7 @@ async function expectError(p, title) {
   await expectError(api.call('system.health', {}, c1.token), 'Cấp 1 không xem được sức khỏe hệ thống');
 
   const rp = await api.call('report.summary', { tuNgay: '01/01/2026', denNgay: '31/12/2026' }, ad2.token);
-  ok(rp.doanVien > 0 && rp.theoAp.length === 4, 'Báo cáo năm: có đoàn viên và đủ 4 Ấp');
+  ok(rp.doanVien > 0 && rp.theoAp.length === 11, 'Báo cáo năm: có đoàn viên và đủ 11 Ấp');
   ok(rp.tuNgay === '01/01/2026' && rp.denNgay === '31/12/2026', 'Báo cáo giữ đúng khoảng thời gian');
   ok(rp.top.length > 0 && rp.top.length <= 5, 'Báo cáo có top 5 điểm rèn luyện');
   const rpAp = await api.call('report.summary', {
@@ -401,11 +401,11 @@ async function expectError(p, title) {
 
   const sentAp = await api.call('admin.notify.send', {
     loai: 'tatCa', maAp: 'AP02', kenh: 'email', emailNhan: 'test@example.com',
-    tieuDe: 'Thông báo riêng Ấp Tân Lập', noiDung: 'Nội dung dành riêng Ấp Tân Lập.'
+    tieuDe: 'Thông báo riêng Ấp Nghĩa Chí', noiDung: 'Nội dung dành riêng Ấp Nghĩa Chí.'
   }, ad2.token);
   ok(!!sentAp.maTB && /email/.test(sentAp.trangThai), 'Gửi nhắc việc qua email (mô phỏng)');
   const notiAp02 = await api.call('notify.my', {}, dv05.token);
-  ok(notiAp02.items.some(x => x.maTB === sentAp.maTB), 'Đoàn viên Ấp Tân Lập nhận đúng thông báo Ấp mình');
+  ok(notiAp02.items.some(x => x.maTB === sentAp.maTB), 'Đoàn viên Ấp Nghĩa Chí nhận đúng thông báo Ấp mình');
   const notiAp01 = await api.call('notify.my', {}, c3.token);
   ok(!notiAp01.items.some(x => x.maTB === sentAp.maTB), 'Đoàn viên Ấp khác không thấy thông báo riêng');
   const listN = await api.call('admin.notify.list', {}, ad2.token);

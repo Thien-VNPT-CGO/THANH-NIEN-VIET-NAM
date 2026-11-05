@@ -171,24 +171,31 @@
 
   function seed() {
     var users = [
-      ['CT_HOILHTN', 'Lê Văn Bình', 1, 'Chủ Tịch', '', '0901000006', '10/06/1982', 0, '', '26/03/2001', 'Chi đoàn Ấp Tân Bình', 'Ngày 20 hằng tháng'],
-      ['BT_CHIBO_XA', 'Nguyễn Văn Hòa', 2, 'Bí thư Chi bộ Xã', '', '0901000001', '15/03/1980', 0, '', '26/03/2000', 'Chi đoàn Ấp Tân Bình', 'Ngày 20 hằng tháng'],
-      ['BT_AP01', 'Trần Thị Mai', 3, 'Bí thư Chi đoàn Ấp Tân Bình', 'AP01', '0901000002', '20/07/1998', 260, '', '26/03/2017', 'Chi đoàn Ấp Tân Bình', 'Ngày 20 hằng tháng'],
-      ['BT_AP02', 'Lê Quốc Bảo', 3, 'Bí thư Chi đoàn Ấp Tân Lập', 'AP02', '0901000003', '02/11/1997', 240, '', '26/03/2016', 'Chi đoàn Ấp Tân Lập', 'Ngày 20 hằng tháng'],
-      ['BT_AP03', 'Phạm Ngọc Lan', 3, 'Bí thư Chi đoàn Ấp Tân Phú', 'AP03', '0901000004', '12/09/1999', 215, '', '26/03/2018', 'Chi đoàn Ấp Tân Phú', 'Ngày 20 hằng tháng'],
-      ['BT_AP04', 'Nguyễn Thanh Thiên', 3, 'Bí thư Chi đoàn Ấp Hòa Bình', 'AP04', '0901000005', '', 0, '', '', 'Chi đoàn Ấp Hòa Bình', 'Ngày 20 hằng tháng'],
-      ['DV01', 'Võ Minh Khoa', 4, 'Đoàn viên', 'AP01', '0902000001', '08/05/2003', 340, 'TDV-2026-AP01-01', '26/03/2021', 'Chi đoàn Ấp Tân Bình', 'Ngày 25 hằng tháng'],
-      ['DV02', 'Nguyễn Thị Thu Hà', 4, 'Đoàn viên', 'AP01', '0902000002', '19/02/2004', 285, 'TDV-2026-AP01-02', '26/03/2022', 'Chi đoàn Ấp Tân Bình', 'Ngày 25 hằng tháng'],
-      ['DV03', 'Trương Tấn Phát', 4, 'Đoàn viên', 'AP01', '0902000003', '30/10/2002', 180, '', '26/03/2020', 'Chi đoàn Ấp Tân Bình', 'Ngày 25 hằng tháng'],
-      ['DV04', 'Lâm Thanh Trúc', 4, 'Đoàn viên', 'AP01', '0902000004', '14/06/2005', 120, '', '26/03/2023', 'Chi đoàn Ấp Tân Bình', 'Ngày 25 hằng tháng'],
-      ['DV05', 'Đặng Quốc Huy', 4, 'Đoàn viên', 'AP02', '0902000005', '21/12/2001', 310, 'TDV-2026-AP02-01', '26/03/2019', 'Chi đoàn Ấp Tân Lập', 'Ngày 25 hằng tháng'],
-      ['DV06', 'Bùi Kim Ngân', 4, 'Đoàn viên', 'AP02', '0902000006', '05/08/2004', 265, 'TDV-2026-AP02-02', '26/03/2022', 'Chi đoàn Ấp Tân Lập', 'Ngày 25 hằng tháng'],
-      ['DV07', 'Huỳnh Gia Bảo', 4, 'Đoàn viên', 'AP02', '0902000007', '17/04/2003', 95, '', '26/03/2021', 'Chi đoàn Ấp Tân Lập', 'Ngày 25 hằng tháng'],
-      ['DV08', 'Ngô Thị Mỹ Duyên', 4, 'Đoàn viên', 'AP02', '0902000008', '09/09/2005', 140, '', '26/03/2023', 'Chi đoàn Ấp Tân Lập', 'Ngày 25 hằng tháng'],
-      ['DV09', 'Phan Anh Tuấn', 4, 'Đoàn viên', 'AP03', '0902000009', '28/01/2002', 300, 'TDV-2026-AP03-01', '26/03/2020', 'Chi đoàn Ấp Tân Phú', 'Ngày 25 hằng tháng'],
-      ['DV10', 'Trần Lê Bảo Châu', 4, 'Đoàn viên', 'AP03', '0902000010', '11/11/2004', 210, 'TDV-2026-AP03-02', '26/03/2022', 'Chi đoàn Ấp Tân Phú', 'Ngày 25 hằng tháng'],
-      ['DV11', 'Cao Minh Trí', 4, 'Đoàn viên', 'AP03', '0902000011', '03/03/2001', 75, '', '26/03/2019', 'Chi đoàn Ấp Tân Phú', 'Ngày 25 hằng tháng'],
-      ['DV12', 'Lý Thị Hồng Nhung', 4, 'Đoàn viên', 'AP03', '0902000012', '25/07/2005', 165, '', '26/03/2023', 'Chi đoàn Ấp Tân Phú', 'Ngày 25 hằng tháng']
+      ['CT_HOILHTN', 'Lê Văn Bình', 1, 'Chủ Tịch', '', '0901000006', '10/06/1982', 0, '', '26/03/2001', 'Chi đoàn Ấp Tân Xuân', 'Ngày 20 hằng tháng'],
+      ['BT_CHIBO_XA', 'Nguyễn Văn Hòa', 2, 'Bí thư Chi bộ Xã', '', '0901000001', '15/03/1980', 0, '', '26/03/2000', 'Chi đoàn Ấp Tân Xuân', 'Ngày 20 hằng tháng'],
+      ['BT_AP01', 'Lê Huỳnh Ngọc Hằng', 3, 'Bí thư Chi đoàn Ấp Tân Xuân', 'AP01', '0363510902', '', 0, '', '', 'Chi đoàn Ấp Tân Xuân', 'Ngày 20 hằng tháng'],
+      ['BT_AP02', 'Nguyễn Kim Chi', 3, 'Bí thư Chi đoàn Ấp Nghĩa Chí', 'AP02', '0369399437', '', 0, '', '', 'Chi đoàn Ấp Nghĩa Chí', 'Ngày 20 hằng tháng'],
+      ['BT_AP03', 'Lê Thị Cẩm Kha', 3, 'Bí thư Chi đoàn Ấp Dương Hòa', 'AP03', '0971153807', '', 0, '', '', 'Chi đoàn Ấp Dương Hòa', 'Ngày 20 hằng tháng'],
+      ['BT_AP04', 'Nguyễn Thanh Thiên', 3, 'Bí thư Chi đoàn Ấp Hòa Bình', 'AP04', '0941615312', '', 0, '', '', 'Chi đoàn Ấp Hòa Bình', 'Ngày 20 hằng tháng'],
+      ['BT_AP05', 'Huỳnh Hải Vy', 3, 'Bí thư Chi đoàn Ấp Hiệp Trị', 'AP05', '0798022577', '', 0, '', '', 'Chi đoàn Ấp Hiệp Trị', 'Ngày 20 hằng tháng'],
+      ['BT_AP06', 'Huỳnh Nguyễn Thảo Hiền', 3, 'Bí thư Chi đoàn Ấp Xóm Gò', 'AP06', '0376096319', '', 0, '', '', 'Chi đoàn Ấp Xóm Gò', 'Ngày 20 hằng tháng'],
+      ['BT_AP07', 'Phan Nguyên Kha', 3, 'Bí thư Chi đoàn Ấp Vạn Thành', 'AP07', '0364527573', '', 0, '', '', 'Chi đoàn Ấp Vạn Thành', 'Ngày 20 hằng tháng'],
+      ['BT_AP08', 'Từ Nguyễn Quốc Tiến', 3, 'Bí thư Chi đoàn Ấp Thạnh Hòa', 'AP08', '0376265780', '', 0, '', '', 'Chi đoàn Ấp Thạnh Hòa', 'Ngày 20 hằng tháng'],
+      ['BT_AP09', 'Đặng Nhật Khánh Vy', 3, 'Bí thư Chi đoàn Ấp Dương Phú', 'AP09', '0939014763', '', 0, '', '', 'Chi đoàn Ấp Dương Phú', 'Ngày 20 hằng tháng'],
+      ['BT_AP10', 'Lê Hoàng Nhân', 3, 'Bí thư Chi đoàn Ấp Lò Gạch', 'AP10', '0348737826', '', 0, '', '', 'Chi đoàn Ấp Lò Gạch', 'Ngày 20 hằng tháng'],
+      ['BT_AP11', 'Lê Thị Bích Hồng', 3, 'Bí thư Chi đoàn Ấp Ruộng Cạn', 'AP11', '0347312902', '', 0, '', '', 'Chi đoàn Ấp Ruộng Cạn', 'Ngày 20 hằng tháng'],
+      ['DV01', 'Võ Minh Khoa', 4, 'Đoàn viên', 'AP01', '0902000001', '08/05/2003', 340, 'TDV-2026-AP01-01', '26/03/2021', 'Chi đoàn Ấp Tân Xuân', 'Ngày 25 hằng tháng'],
+      ['DV02', 'Nguyễn Thị Thu Hà', 4, 'Đoàn viên', 'AP01', '0902000002', '19/02/2004', 285, 'TDV-2026-AP01-02', '26/03/2022', 'Chi đoàn Ấp Tân Xuân', 'Ngày 25 hằng tháng'],
+      ['DV03', 'Trương Tấn Phát', 4, 'Đoàn viên', 'AP01', '0902000003', '30/10/2002', 180, '', '26/03/2020', 'Chi đoàn Ấp Tân Xuân', 'Ngày 25 hằng tháng'],
+      ['DV04', 'Lâm Thanh Trúc', 4, 'Đoàn viên', 'AP01', '0902000004', '14/06/2005', 120, '', '26/03/2023', 'Chi đoàn Ấp Tân Xuân', 'Ngày 25 hằng tháng'],
+      ['DV05', 'Đặng Quốc Huy', 4, 'Đoàn viên', 'AP02', '0902000005', '21/12/2001', 310, 'TDV-2026-AP02-01', '26/03/2019', 'Chi đoàn Ấp Nghĩa Chí', 'Ngày 25 hằng tháng'],
+      ['DV06', 'Bùi Kim Ngân', 4, 'Đoàn viên', 'AP02', '0902000006', '05/08/2004', 265, 'TDV-2026-AP02-02', '26/03/2022', 'Chi đoàn Ấp Nghĩa Chí', 'Ngày 25 hằng tháng'],
+      ['DV07', 'Huỳnh Gia Bảo', 4, 'Đoàn viên', 'AP02', '0902000007', '17/04/2003', 95, '', '26/03/2021', 'Chi đoàn Ấp Nghĩa Chí', 'Ngày 25 hằng tháng'],
+      ['DV08', 'Ngô Thị Mỹ Duyên', 4, 'Đoàn viên', 'AP02', '0902000008', '09/09/2005', 140, '', '26/03/2023', 'Chi đoàn Ấp Nghĩa Chí', 'Ngày 25 hằng tháng'],
+      ['DV09', 'Phan Anh Tuấn', 4, 'Đoàn viên', 'AP03', '0902000009', '28/01/2002', 300, 'TDV-2026-AP03-01', '26/03/2020', 'Chi đoàn Ấp Dương Hòa', 'Ngày 25 hằng tháng'],
+      ['DV10', 'Trần Lê Bảo Châu', 4, 'Đoàn viên', 'AP03', '0902000010', '11/11/2004', 210, 'TDV-2026-AP03-02', '26/03/2022', 'Chi đoàn Ấp Dương Hòa', 'Ngày 25 hằng tháng'],
+      ['DV11', 'Cao Minh Trí', 4, 'Đoàn viên', 'AP03', '0902000011', '03/03/2001', 75, '', '26/03/2019', 'Chi đoàn Ấp Dương Hòa', 'Ngày 25 hằng tháng'],
+      ['DV12', 'Lý Thị Hồng Nhung', 4, 'Đoàn viên', 'AP03', '0902000012', '25/07/2005', 165, '', '26/03/2023', 'Chi đoàn Ấp Dương Hòa', 'Ngày 25 hằng tháng']
     ].map(function (r) {
       return {
         MaDD: r[0], HoTen: r[1], Cap: r[2], ChucVu: r[3], MaAp: r[4], DienThoai: r[5],
@@ -226,10 +233,17 @@
         }
       },
       aps: [
-        { MaAp: 'AP01', TenAp: 'Ấp Tân Bình', BiThu: 'BT_AP01', ChiTieu: 100 },
-        { MaAp: 'AP02', TenAp: 'Ấp Tân Lập', BiThu: 'BT_AP02', ChiTieu: 90 },
-        { MaAp: 'AP03', TenAp: 'Ấp Tân Phú', BiThu: 'BT_AP03', ChiTieu: 80 },
-        { MaAp: 'AP04', TenAp: 'Ấp Hòa Bình', BiThu: 'BT_AP04', ChiTieu: 70 }
+        { MaAp: 'AP01', TenAp: 'Ấp Tân Xuân', BiThu: 'BT_AP01', ChiTieu: 100 },
+        { MaAp: 'AP02', TenAp: 'Ấp Nghĩa Chí', BiThu: 'BT_AP02', ChiTieu: 90 },
+        { MaAp: 'AP03', TenAp: 'Ấp Dương Hòa', BiThu: 'BT_AP03', ChiTieu: 80 },
+        { MaAp: 'AP04', TenAp: 'Ấp Hòa Bình', BiThu: 'BT_AP04', ChiTieu: 70 },
+        { MaAp: 'AP05', TenAp: 'Ấp Hiệp Trị', BiThu: 'BT_AP05', ChiTieu: 60 },
+        { MaAp: 'AP06', TenAp: 'Ấp Xóm Gò', BiThu: 'BT_AP06', ChiTieu: 60 },
+        { MaAp: 'AP07', TenAp: 'Ấp Vạn Thành', BiThu: 'BT_AP07', ChiTieu: 60 },
+        { MaAp: 'AP08', TenAp: 'Ấp Thạnh Hòa', BiThu: 'BT_AP08', ChiTieu: 60 },
+        { MaAp: 'AP09', TenAp: 'Ấp Dương Phú', BiThu: 'BT_AP09', ChiTieu: 60 },
+        { MaAp: 'AP10', TenAp: 'Ấp Lò Gạch', BiThu: 'BT_AP10', ChiTieu: 60 },
+        { MaAp: 'AP11', TenAp: 'Ấp Ruộng Cạn', BiThu: 'BT_AP11', ChiTieu: 60 }
       ],
       users: users,
       cards: [],
@@ -311,7 +325,7 @@
 
     db.sos.push({
       MaPA: 'PA-261015-AAAAAA', MaDD: 'DV03', HoTen: 'Trương Tấn Phát', MaAp: 'AP01',
-      Loai: 'Rác thải tự phát', NoiDung: 'Bãi rác tự phát gần cầu Tân Bình, ảnh hưởng dòng chảy.',
+      Loai: 'Rác thải tự phát', NoiDung: 'Bãi rác tự phát gần cầu Tân Xuân, ảnh hưởng dòng chảy.',
       ViDo: 10.5335, KinhDo: 106.4125, Diem: 10, TrangThai: 'Chờ duyệt', MaNV: '', ThoiGian: daysAgo(10)
     });
     db.sos.push({
@@ -427,37 +441,60 @@
       if (admin.SoLanSai === undefined) admin.SoLanSai = 0;
     }
 
-    /* Chi đoàn Ấp Hòa Bình + tài khoản Bí thư (bổ sung idempotent cho dữ liệu cũ). */
+    /* Danh mục 11 Chi đoàn Ấp thực tế + tài khoản Bí thư (đồng bộ idempotent cho dữ liệu cũ). */
+    var AP_DANH_MUC = [
+      ['AP01', 'Ấp Tân Xuân', 'BT_AP01', 'Lê Huỳnh Ngọc Hằng', '0363510902'],
+      ['AP02', 'Ấp Nghĩa Chí', 'BT_AP02', 'Nguyễn Kim Chi', '0369399437'],
+      ['AP03', 'Ấp Dương Hòa', 'BT_AP03', 'Lê Thị Cẩm Kha', '0971153807'],
+      ['AP04', 'Ấp Hòa Bình', 'BT_AP04', 'Nguyễn Thanh Thiên', '0941615312'],
+      ['AP05', 'Ấp Hiệp Trị', 'BT_AP05', 'Huỳnh Hải Vy', '0798022577'],
+      ['AP06', 'Ấp Xóm Gò', 'BT_AP06', 'Huỳnh Nguyễn Thảo Hiền', '0376096319'],
+      ['AP07', 'Ấp Vạn Thành', 'BT_AP07', 'Phan Nguyên Kha', '0364527573'],
+      ['AP08', 'Ấp Thạnh Hòa', 'BT_AP08', 'Từ Nguyễn Quốc Tiến', '0376265780'],
+      ['AP09', 'Ấp Dương Phú', 'BT_AP09', 'Đặng Nhật Khánh Vy', '0939014763'],
+      ['AP10', 'Ấp Lò Gạch', 'BT_AP10', 'Lê Hoàng Nhân', '0348737826'],
+      ['AP11', 'Ấp Ruộng Cạn', 'BT_AP11', 'Lê Thị Bích Hồng', '0347312902']
+    ];
     db.aps = db.aps || [];
-    var apHoaBinh = find(db.aps, 'MaAp', 'AP04');
-    if (!apHoaBinh) {
-      apHoaBinh = { MaAp: 'AP04', TenAp: 'Ấp Hòa Bình', BiThu: 'BT_AP04', ChiTieu: 70 };
-      db.aps.push(apHoaBinh);
-    }
-    if (!apHoaBinh.BiThu) apHoaBinh.BiThu = 'BT_AP04';
-
     db.users = db.users || [];
-    var btHoaBinh = find(db.users, 'MaDD', 'BT_AP04');
-    if (!btHoaBinh) {
-      db.users.push({
-        MaDD: 'BT_AP04', HoTen: 'Nguyễn Thanh Thiên', Cap: 3,
-        ChucVu: 'Bí thư Chi đoàn Ấp Hòa Bình', MaAp: 'AP04',
-        DienThoai: '0901000005', NgaySinh: '',
-        PIN: '', PINHash: hashPin('BT_AP04', '123456'),
-        BatDoiPin: false, SoLanSai: 0, KhoaDen: '', TokenVersion: 1,
-        Diem: 0, DiemNen: 0, TrangThai: 'Đang hoạt động', MaThe: '',
-        NgayVaoDoan: '', NoiVaoDoan: 'Chi đoàn Ấp Hòa Bình',
-        NgaySinhHoatDoan: 'Ngày 20 hằng tháng',
-        UyQuyenCho: '', UyQuyenDen: '', NgayThamGia: '01/01/2026',
-        DaXoa: false, NgayXoa: '', NguoiXoa: ''
-      });
-    } else {
-      // Luôn chuẩn hóa đúng cấp bậc, chức vụ và đơn vị của tài khoản Bí thư.
-      btHoaBinh.Cap = 3;
-      btHoaBinh.ChucVu = 'Bí thư Chi đoàn Ấp Hòa Bình';
-      btHoaBinh.MaAp = 'AP04';
-      if (btHoaBinh.DaXoa === undefined) btHoaBinh.DaXoa = false;
-    }
+    var apNameById = {};
+    AP_DANH_MUC.forEach(function (r) {
+      var maAp = r[0], tenAp = r[1], maDD = r[2], hoTen = r[3], sdt = r[4];
+      var ap = find(db.aps, 'MaAp', maAp);
+      if (!ap) db.aps.push({ MaAp: maAp, TenAp: tenAp, BiThu: maDD, ChiTieu: 60 });
+      else { ap.TenAp = tenAp; ap.BiThu = maDD; }
+      apNameById[maAp] = tenAp;
+
+      var u = find(db.users, 'MaDD', maDD);
+      if (!u) {
+        db.users.push({
+          MaDD: maDD, HoTen: hoTen, Cap: 3, ChucVu: 'Bí thư Chi đoàn ' + tenAp,
+          MaAp: maAp, DienThoai: sdt, NgaySinh: '',
+          PIN: '', PINHash: hashPin(maDD, '123456'),
+          BatDoiPin: false, SoLanSai: 0, KhoaDen: '', TokenVersion: 1,
+          Diem: 0, DiemNen: 0, TrangThai: 'Đang hoạt động', MaThe: '',
+          NgayVaoDoan: '', NoiVaoDoan: 'Chi đoàn ' + tenAp,
+          NgaySinhHoatDoan: 'Ngày 20 hằng tháng',
+          UyQuyenCho: '', UyQuyenDen: '', NgayThamGia: '01/01/2026',
+          DaXoa: false, NgayXoa: '', NguoiXoa: ''
+        });
+      } else {
+        // Luôn chuẩn hóa đúng họ tên, cấp bậc, chức vụ, đơn vị và số điện thoại.
+        u.HoTen = hoTen;
+        u.Cap = 3;
+        u.ChucVu = 'Bí thư Chi đoàn ' + tenAp;
+        u.MaAp = maAp;
+        u.DienThoai = sdt;
+        u.NoiVaoDoan = 'Chi đoàn ' + tenAp;
+        if (u.DaXoa === undefined) u.DaXoa = false;
+      }
+    });
+    // Chuẩn hóa "Nơi vào Đoàn" của đoàn viên theo tên Ấp mới.
+    db.users.forEach(function (u) {
+      if (u.MaAp && apNameById[u.MaAp] && Number(u.Cap) === 4) {
+        u.NoiVaoDoan = 'Chi đoàn ' + apNameById[u.MaAp];
+      }
+    });
     return db;
   }
 
