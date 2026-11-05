@@ -32,6 +32,9 @@ function api(action, payload, token) {
     // Đồng bộ danh mục 11 Chi đoàn Ấp + tài khoản Bí thư một lần (không chặn API nếu lỗi).
     try { ensureDanhMucApOnce_(); }
     catch (e) { Logger.log('Không đồng bộ được danh mục Chi đoàn Ấp: ' + (e && e.message ? e.message : e)); }
+    // Bổ sung đoàn viên ngẫu nhiên một lần cho mỗi Ấp (mỗi Ấp đạt 5–15 người).
+    try { ensureRandomMembersOnce_(); }
+    catch (e) { Logger.log('Không bổ sung được đoàn viên ngẫu nhiên: ' + (e && e.message ? e.message : e)); }
 
     // -------- Nhóm công khai (không cần đăng nhập) --------
     if (action === 'auth.login') return ok_(withLock_(function () { return svc_login(payload); }));

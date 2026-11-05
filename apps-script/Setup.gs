@@ -124,6 +124,124 @@ var CANBO_MAU = [
   ['DV12', 'Lý Thị Hồng Nhung', 4, 'Đoàn viên', 'AP03', '0902000012', '25/07/2005', '123456', 165, 'Đang hoạt động', '', '26/03/2023', 'Chi đoàn Ấp Dương Hòa', 'Ngày 25 hằng tháng']
 ];
 
+/* ------------------------------------------------------------------ */
+/* SINH ĐOÀN VIÊN NGẪU NHIÊN                                          */
+/* Mỗi Chi đoàn Ấp đạt 5–15 đoàn viên. Chỉ bổ sung khi Ấp còn dưới 5  */
+/* người nên chạy lại nhiều lần vẫn không vượt ngưỡng 15.             */
+/* ------------------------------------------------------------------ */
+
+var MEMBER_MIN = 5;
+var MEMBER_MAX = 15;
+var RANDOM_MEMBERS_FLAG = 'BO_SUNG_DOAN_VIEN_NGAU_NHIEN_V1';
+
+var HO_POOL_ = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Huỳnh', 'Phan', 'Võ', 'Đặng', 'Bùi', 'Đỗ',
+  'Hồ', 'Ngô', 'Dương', 'Lý', 'Trương', 'Cao', 'Từ', 'Mai', 'Đinh', 'Lâm'];
+var TEN_POOL_ = ['An', 'Anh', 'Bảo', 'Bình', 'Châu', 'Chi', 'Duyên', 'Dũng', 'Giang', 'Hà',
+  'Hằng', 'Hiền', 'Hòa', 'Hùng', 'Huy', 'Kha', 'Khanh', 'Khoa', 'Khánh', 'Lan',
+  'Linh', 'Long', 'Mai', 'Nam', 'Ngân', 'Nga', 'Nhung', 'Nhân', 'Phát', 'Phương',
+  'Quân', 'Quỳnh', 'Sơn', 'Tâm', 'Thảo', 'Thiên', 'Trang', 'Trí', 'Trúc', 'Tuấn',
+  'Tú', 'Vy', 'Yến', 'Hạnh', 'Hào', 'Kiệt', 'Lộc', 'My', 'Nghi', 'Phúc',
+  'Quyên', 'Thắng', 'Thịnh', 'Trinh', 'Uyên', 'Vinh', 'Xuân'];
+var PHONE_PREFIX_ = ['032', '033', '034', '035', '036', '037', '038', '039',
+  '052', '056', '058', '059', '070', '076', '077', '078', '079',
+  '081', '082', '083', '084', '085', '086', '088', '089',
+  '090', '091', '092', '093', '094', '096', '097', '098', '099'];
+
+function randInt_(min, max) { return min + Math.floor(Math.random() * (max - min + 1)); }
+function pickOne_(arr) { return arr[randInt_(0, arr.length - 1)]; }
+function pad2_(n) { return n < 10 ? '0' + n : String(n); }
+
+function randTenDayDu_(used) {
+  var ten = '';
+  for (var i = 0; i < 20; i++) {
+    ten = pickOne_(HO_POOL_) + ' ' + pickOne_(TEN_POOL_) + ' ' + pickOne_(TEN_POOL_);
+    if (!used[ten]) break;
+  }
+  used[ten] = true;
+  return ten;
+}
+
+function randNgaySinh_() {
+  return pad2_(randInt_(1, 28)) + '/' + pad2_(randInt_(1, 12)) + '/' + randInt_(1998, 2007);
+}
+
+function randDienThoai_(used) {
+  var sdt = '';
+  do {
+    sdt = pickOne_(PHONE_PREFIX_) + String(randInt_(1000000, 9999999));
+  } while (used[sdt]);
+  used[sdt] = true;
+  return sdt;
+}
+
+/** Bổ sung đoàn viên cho các Ấp còn dưới 5 người. Trả về số đã thêm. */
+function ensureRandomMembers_() {
+  var users = rows_('DM_CanBo');
+  if (!users.length) return 0;
+
+  var usedPhone = {};
+  var usedName = {};
+  var countByAp = {};
+  var seq = 0;
+  users.forEach(function (u) {
+    if (u.DienThoai) usedPhone[String(u.DienThoai)] = true;
+    if (u.HoTen) usedName[String(u.HoTen)] = true;
+    var m = /^DV(\d+)$/.exec(String(u.MaDD || ''));
+    if (m) seq = Math.max(seq, Number(m[1]));
+    if (Number(u.Cap) === 4 && String(u.DaXoa).toUpperCase() !== 'TRUE') {
+      countByAp[u.MaAp] = Number(countByAp[u.MaAp] || 0) + 1;
+    }
+  });
+
+  var added = 0;
+  rows_('DM_Ap').forEach(function (ap) {
+    var maAp = ap.MaAp;
+    var tenAp = ap.TenAp || maAp;
+    var count = Number(countByAp[maAp] || 0);
+    if (count >= MEMBER_MIN) return;
+
+    var target = randInt_(MEMBER_MIN, MEMBER_MAX);
+    for (var i = count; i < target; i++) {
+      seq += 1;
+      var maDD = 'DV' + (seq < 10 ? '0' : '') + seq;
+      var ngaySinh = randNgaySinh_();
+      var namVaoDoan = Math.min(2026, Number(ngaySinh.slice(-4)) + randInt_(18, 22));
+      var diem = randInt_(30, 320);
+      append_('DM_CanBo', {
+        MaDD: maDD, HoTen: randTenDayDu_(usedName), Cap: 4, ChucVu: 'Đoàn viên',
+        MaAp: maAp, DienThoai: randDienThoai_(usedPhone), NgaySinh: ngaySinh,
+        NgayVaoDoan: '26/03/' + namVaoDoan, NoiVaoDoan: 'Chi đoàn ' + tenAp,
+        NgaySinhHoatDoan: 'Ngày 25 hằng tháng',
+        PIN: '', PINHash: hashPin_(maDD, '123456'),
+        Diem: diem, DiemNen: diem, TrangThai: 'Đang hoạt động', MaThe: '',
+        UyQuyenCho: '', UyQuyenDen: '', NgayThamGia: '01/01/2026', GhiChu: '',
+        MatKhauHash: '', BatDoiMatKhau: 'FALSE',
+        BatDoiPin: 'FALSE', SoLanSai: 0, KhoaDen: '', TokenVersion: 1,
+        DaXoa: 'FALSE', NgayXoa: '', NguoiXoa: ''
+      });
+      countByAp[maAp] = Number(countByAp[maAp] || 0) + 1;
+      added += 1;
+    }
+  });
+
+  if (added > 0) {
+    log_('SYSTEM', 'BỔ SUNG ĐOÀN VIÊN',
+      'Sinh ngẫu nhiên ' + added + ' đoàn viên cho các Chi đoàn Ấp (mỗi Ấp 5–15 người)');
+  }
+  invalidateRows_();
+  return added;
+}
+
+/** Chạy bổ sung đoàn viên ngẫu nhiên một lần cho bảng tính đang chạy. */
+function ensureRandomMembersOnce_() {
+  var props = PropertiesService.getScriptProperties();
+  if (props.getProperty(RANDOM_MEMBERS_FLAG) === '1') return false;
+  if (!rows_('DM_CanBo').length) return false;
+  ensureRandomMembers_();
+  props.setProperty(RANDOM_MEMBERS_FLAG, '1');
+  return true;
+}
+
 var QUIZ_MAU = [
   ['Q01', 'Đại hội Đoàn TNCS Hồ Chí Minh nhiệm kỳ 2022 – 2027 được tổ chức tại đâu?', 'Hà Nội', 'TP. Hồ Chí Minh', 'Đà Nẵng', 'Cần Thơ', 'A', 'Nghị quyết Đại hội', 15, 'Đại hội XII diễn ra tại Thủ đô Hà Nội.'],
   ['Q02', 'Nội dung nào KHÔNG thuộc chương trình "Dân vận khéo" của Chi đoàn?', 'Xây dựng tuyến đường hoa', 'Hỗ trợ hộ khó khăn', 'Tổ chức họp lớp học sinh', 'Chuyển đổi số khu dân cư', 'C', 'Dân vận khéo', 15, 'Họp lớp học sinh không thuộc phạm vi dân vận khéo của Chi đoàn Ấp.'],
@@ -149,6 +267,8 @@ function setup() {
   ensureSecurityV3_();
   ensureConfigVersion_();
   ensureDanhMucAp_();
+  ensureRandomMembers_();
+  PropertiesService.getScriptProperties().setProperty(RANDOM_MEMBERS_FLAG, '1');
   ensureBackupTrigger_();
   ensureSchema_(true);
   return 'Khởi tạo thành công: ' + Object.keys(SCHEMA).length + ' bảng dữ liệu. Xem file README.md để triển khai Web App.';
@@ -329,6 +449,8 @@ function resetDemo() {
   ensureSecurityV3_();
   ensureConfigVersion_();
   ensureDanhMucAp_();
+  ensureRandomMembers_();
+  PropertiesService.getScriptProperties().setProperty(RANDOM_MEMBERS_FLAG, '1');
   ensureBackupTrigger_();
   return 'Đã nạp lại dữ liệu mẫu.';
 }

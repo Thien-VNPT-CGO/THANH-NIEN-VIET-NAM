@@ -466,8 +466,11 @@ function svc_memberAdd(u, p) {
   var all = rows_('DM_CanBo');
   var nums = all.map(function (r) { var m = String(r.MaDD).match(/^DV(\d+)$/); return m ? Number(m[1]) : 0; });
   var next = Math.max.apply(null, nums.concat([0])) + 1;
-  var maDD = 'DV' + ('0' + next).slice(-2);
-  while (findBy_('DM_CanBo', 'MaDD', maDD)) { next++; maDD = 'DV' + ('0' + next).slice(-2); }
+  var maDD = 'DV' + (next < 10 ? '0' + next : String(next));
+  while (findBy_('DM_CanBo', 'MaDD', maDD)) {
+    next += 1;
+    maDD = 'DV' + (next < 10 ? '0' + next : String(next));
+  }
 
   var ap = findBy_('DM_Ap', 'MaAp', maAp);
   if (!ap) throw new Error('Không tìm thấy Chi đoàn Ấp ' + maAp + '.');

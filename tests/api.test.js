@@ -35,6 +35,8 @@ async function expectError(p, title) {
   console.log('\n[2] Dashboard theo phạm vi');
   const h1 = await api.call('home.summary', {}, ct.token);
   ok(h1.kpi.length === 4 && h1.apStats.length === 11, 'Cấp 1 thấy KPI + toàn bộ 11 Ấp');
+  ok(h1.apStats.every(a => a.soDoanVien >= 5 && a.soDoanVien <= 15),
+    'Mỗi Chi đoàn Ấp có 5–15 đoàn viên (' + h1.apStats.map(a => a.soDoanVien).join('/') + ')');
   const h2 = await api.call('home.summary', {}, c1.token);
   ok(h2.apStats.length === 11, 'Cấp 2 (Bí thư Chi bộ Xã) thấy toàn bộ 11 Ấp');
   const h3 = await api.call('home.summary', {}, c2.token);
@@ -63,7 +65,8 @@ async function expectError(p, title) {
   const dv01 = um.items.filter(x => x.maDD === 'DV01')[0];
   ok(dv01.duDieuKien === true, 'DV01 đủ 3 tiêu chuẩn');
   const umXa = await api.call('uommam.list', {}, c1.token);
-  ok(umXa.items.length === 12, 'Cấp 2 thấy đủ 12 hồ sơ toàn Xã');
+  ok(umXa.items.length >= 55 && umXa.items.length <= 165,
+    'Cấp 2 thấy đủ hồ sơ toàn Xã (' + umXa.items.length + ')');
   await expectError(api.call('uommam.nominate', { maDD: 'DV01', nhanXet: 'Thử đề cử từ đoàn viên.' }, c3.token), 'Cấp 4 không được đề cử');
   const nom = await api.call('uommam.nominate', { maDD: 'DV01', nhanXet: 'Lập trường vững vàng, tích cực tình nguyện, có uy tín.' }, c2.token);
   ok(!!nom.message, 'Cấp 3 đề cử');
@@ -165,7 +168,7 @@ async function expectError(p, title) {
 
   console.log('\n[10] Quản trị & bảo mật');
   const add = await api.call('member.add', { hoTen: 'Nguyễn Test', dienThoai: '0912345678', ngaySinh: '01/01/2005' }, c2.token);
-  ok(add.maDD === 'DV13', 'Cấp 3 thêm đoàn viên vào Ấp, mã tự tăng');
+  ok(/^DV\d+$/.test(add.maDD), 'Cấp 3 thêm đoàn viên vào Ấp, mã tự tăng (' + add.maDD + ')');
   await expectError(api.call('member.add', { hoTen: 'Sai SĐT', dienThoai: '123' }, c2.token), 'Validate số điện thoại');
   const yc = await api.call('auth.requestPinReset', { maDD: 'DV02', lyDo: 'Quên PIN' });
   ok(!!yc.maYC, 'Gửi yêu cầu cấp lại PIN');
@@ -326,7 +329,7 @@ async function expectError(p, title) {
   ok(!!aExp.message, 'Admin ghi chi quỹ cho Ấp chỉ định');
 
   const aAdd = await api.call('member.add', { hoTen: 'Đoàn viên Admin tạo', dienThoai: '0911222333', ngaySinh: '02/02/2006', maAp: 'AP02' }, ad2.token);
-  ok(aAdd.maDD === 'DV14', 'Admin thêm đoàn viên vào Ấp chỉ định');
+  ok(/^DV\d+$/.test(aAdd.maDD), 'Admin thêm đoàn viên vào Ấp chỉ định (' + aAdd.maDD + ')');
   const aUpd = await api.call('member.update', {
     maDD: aAdd.maDD, hoTen: 'Đoàn viên Admin sửa', dienThoai: '0911222444',
     ngaySinh: '03/03/2006', maAp: 'AP03', ghiChu: 'Cập nhật bởi Admin'

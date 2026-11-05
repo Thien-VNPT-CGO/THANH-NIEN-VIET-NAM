@@ -215,6 +215,14 @@ Mật khẩu/PIN chung cho tài khoản nghiệp vụ: **`123456`**
 
 Ngoài ra có `DV03`, `DV04`, `DV06`… với điểm thấp hơn để thử luồng cảnh báo.
 
+### Đoàn viên ngẫu nhiên theo Chi đoàn Ấp
+
+Hệ thống tự bổ sung đoàn viên ngẫu nhiên để **mỗi Chi đoàn Ấp có từ 5 đến 15 đoàn viên**. Cụ thể:
+
+- Bản xem trước (`web/mock-api.js`): sinh khi khởi tạo dữ liệu và tự nâng cấp dữ liệu `localStorage` cũ một lần (cờ `randomMembersV1`).
+- Bản Google Apps Script (`Setup.gs`): `setup()` và `resetDemo()` sinh ngay; bảng tính đang chạy được bổ sung một lần qua `ensureRandomMembersOnce_()` với dấu `BO_SUNG_DOAN_VIEN_NGAU_NHIEN_V1`.
+- Mã đoàn viên tiếp nối `DV13`, `DV14`…; PIN mặc định `123456`; họ tên, số điện thoại (10 số, duy nhất), ngày sinh và điểm rèn luyện được sinh ngẫu nhiên. Mỗi Ấp chỉ được bổ sung khi còn dưới 5 người nên chạy lại không vượt quá 15.
+
 ### Logo Chi đoàn Ấp
 
 Mỗi Chi đoàn Ấp dùng đúng logo của mình. Logo hiển thị ở **topbar** khi đăng nhập, **thẻ Đoàn viên điện tử**, **danh sách Chi đoàn Ấp** và **danh sách tài khoản** ở tab Quản trị. Ảnh gốc nằm trong `image/logo/`; bản thumbnail 192×192 dùng cho ứng dụng nằm trong `web/assets/ap-logo/` và được nhúng tự động vào `apps-script/Index.html` khi build.
@@ -294,7 +302,7 @@ Bảng tính được tạo hoàn toàn bằng `setup()` — không cần tạo 
 
 | Bộ test | Phạm vi | Kết quả |
 |---|---|---|
-| `tests/api.test.js` (Node) | 13 nhóm nghiệp vụ backend: đăng nhập C1–C4, QR, Ươm mầm, đoàn phí, thẻ, SOS, quiz, AI, quản trị, bảo mật, **quản trị hệ thống C0**, **cập nhật hồ sơ Chủ tịch Hội LHTN Xã & Bí thư Chi bộ Xã**, **Admin toàn quyền nghiệp vụ & CRUD đoàn viên**, **phân trang danh sách đoàn viên**, **khóa đăng nhập, thu hồi token, buộc đổi PIN, xóa mềm/khôi phục, sao lưu/kiểm tra/phục hồi & đối soát điểm**, **chống khóa ADMIN từ xa**, **phiên bản cấu hình realtime** | **209/209 đạt** |
+| `tests/api.test.js` (Node) | 13 nhóm nghiệp vụ backend: đăng nhập C1–C4, QR, Ươm mầm, đoàn phí, thẻ, SOS, quiz, AI, quản trị, bảo mật, **quản trị hệ thống C0**, **cập nhật hồ sơ Chủ tịch Hội LHTN Xã & Bí thư Chi bộ Xã**, **Admin toàn quyền nghiệp vụ & CRUD đoàn viên**, **phân trang danh sách đoàn viên**, **khóa đăng nhập, thu hồi token, buộc đổi PIN, xóa mềm/khôi phục, sao lưu/kiểm tra/phục hồi & đối soát điểm**, **chống khóa ADMIN từ xa**, **phiên bản cấu hình realtime** | **210/210 đạt** |
 | `tests/parity.test.js` (Node) | Đối chiếu **64 hành động API** và **13 hành động bump cấu hình** giữa `Code.gs` và `mock-api.js`, bảo đảm mock không lệch backend thật | **10/10 đạt** |
 | `tests/ui.test.js` (jsdom) | Đăng nhập C0–C4, nhãn đơn vị trên topbar, điều hướng tab, mở phiên QR, quét token, VietQR, E-Card, 360°, quiz, AI, SOS, **QR tạo cục bộ dạng data URL & UTF-8**, **buộc đổi mật khẩu/PIN & trung tâm điều hành 5 phân khu C0**, **sửa hồ sơ Chủ tịch / Bí thư Chi bộ Xã và đồng bộ Đơn vị**, **C0 mở đủ 9 tab, sửa/xóa mềm đoàn viên, chọn Ấp khi ghi chi, thùng rác, kiểm tra/phục hồi sao lưu**, **phân trang 50 + Xem thêm**, **cảnh báo ngoại tuyến**, **đồng bộ cấu hình realtime (topbar + hồ sơ)**, **logo đúng theo từng Chi đoàn Ấp (topbar, thẻ, danh sách Ấp, tài khoản)**, bắt lỗi JS | **126/126 đạt** |
 

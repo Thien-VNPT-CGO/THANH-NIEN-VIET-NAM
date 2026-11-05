@@ -169,6 +169,102 @@
     ['Q06', 'Mã QR điểm danh động có thời hạn bao lâu?', '30 giây', '60 giây', '5 phút', '1 ngày', 'B', 'Nghiệp vụ', 15, 'Token QR tự động đổi mỗi 60 giây để chống quét ảnh chụp màn hình.']
   ];
 
+  /* ------------------ SINH ĐOÀN VIÊN NGẪU NHIÊN ------------------ */
+  /* Mỗi Chi đoàn Ấp được bổ sung ngẫu nhiên để đạt 5–15 đoàn viên.
+     Chỉ sinh thêm khi Ấp còn dưới 5 người, nhờ vậy gọi lại không tăng vô hạn. */
+  var MEMBER_MIN = 5;
+  var MEMBER_MAX = 15;
+  var HO_POOL = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Huỳnh', 'Phan', 'Võ', 'Đặng', 'Bùi', 'Đỗ',
+    'Hồ', 'Ngô', 'Dương', 'Lý', 'Trương', 'Cao', 'Từ', 'Mai', 'Đinh', 'Lâm'];
+  var TEN_POOL = ['An', 'Anh', 'Bảo', 'Bình', 'Châu', 'Chi', 'Duyên', 'Dũng', 'Giang', 'Hà',
+    'Hằng', 'Hiền', 'Hòa', 'Hùng', 'Huy', 'Kha', 'Khanh', 'Khoa', 'Khánh', 'Lan',
+    'Linh', 'Long', 'Mai', 'Nam', 'Ngân', 'Nga', 'Nhung', 'Nhân', 'Phát', 'Phương',
+    'Quân', 'Quỳnh', 'Sơn', 'Tâm', 'Thảo', 'Thiên', 'Trang', 'Trí', 'Trúc', 'Tuấn',
+    'Tú', 'Vy', 'Yến', 'Hạnh', 'Hào', 'Kiệt', 'Lộc', 'My', 'Nghi', 'Phúc',
+    'Quyên', 'Thắng', 'Thịnh', 'Trinh', 'Uyên', 'Vinh', 'Xuân'];
+  var PHONE_PREFIX = ['032', '033', '034', '035', '036', '037', '038', '039',
+    '052', '056', '058', '059', '070', '076', '077', '078', '079',
+    '081', '082', '083', '084', '085', '086', '088', '089',
+    '090', '091', '092', '093', '094', '096', '097', '098', '099'];
+
+  function randInt(min, max) { return min + Math.floor(Math.random() * (max - min + 1)); }
+  function pickOne(arr) { return arr[randInt(0, arr.length - 1)]; }
+  function pad2(n) { return n < 10 ? '0' + n : String(n); }
+
+  function randomTenDayDu(used) {
+    var ten = '';
+    for (var i = 0; i < 20; i++) {
+      ten = pickOne(HO_POOL) + ' ' + pickOne(TEN_POOL) + ' ' + pickOne(TEN_POOL);
+      if (!used[ten]) break;
+    }
+    used[ten] = true;
+    return ten;
+  }
+
+  function randomNgaySinh() {
+    return pad2(randInt(1, 28)) + '/' + pad2(randInt(1, 12)) + '/' + randInt(1998, 2007);
+  }
+
+  function randomDienThoai(used) {
+    var sdt = '';
+    do {
+      sdt = pickOne(PHONE_PREFIX) + String(randInt(1000000, 9999999));
+    } while (used[sdt]);
+    used[sdt] = true;
+    return sdt;
+  }
+
+  /** Bổ sung đoàn viên cho các Ấp còn dưới 5 người. Trả về số đã thêm. */
+  function ensureRandomMembers(db) {
+    db.users = db.users || [];
+    var usedPhone = {};
+    var usedName = {};
+    db.users.forEach(function (u) {
+      if (u.DienThoai) usedPhone[String(u.DienThoai)] = true;
+      if (u.HoTen) usedName[String(u.HoTen)] = true;
+    });
+
+    var seq = 0;
+    db.users.forEach(function (u) {
+      var m = /^DV(\d+)$/.exec(String(u.MaDD || ''));
+      if (m) seq = Math.max(seq, Number(m[1]));
+    });
+
+    var added = 0;
+    (db.aps || []).forEach(function (ap) {
+      var maAp = ap.MaAp;
+      var tenAp = ap.TenAp || maAp;
+      var count = db.users.filter(function (u) {
+        return Number(u.Cap) === 4 && u.MaAp === maAp && !isDeleted(u);
+      }).length;
+      if (count >= MEMBER_MIN) return;
+
+      var target = randInt(MEMBER_MIN, MEMBER_MAX);
+      for (var i = count; i < target; i++) {
+        seq += 1;
+        var maDD = 'DV' + (seq < 10 ? '0' : '') + seq;
+        var ngaySinh = randomNgaySinh();
+        var namVaoDoan = Math.min(2026, Number(ngaySinh.slice(-4)) + randInt(18, 22));
+        var diem = randInt(30, 320);
+        db.users.push({
+          MaDD: maDD, HoTen: randomTenDayDu(usedName), Cap: 4, ChucVu: 'Đoàn viên',
+          MaAp: maAp, DienThoai: randomDienThoai(usedPhone), NgaySinh: ngaySinh,
+          PIN: '', PINHash: hashPin(maDD, '123456'),
+          BatDoiPin: false, SoLanSai: 0, KhoaDen: '', TokenVersion: 1,
+          Diem: diem, DiemNen: diem, TrangThai: 'Đang hoạt động', MaThe: '',
+          NgayVaoDoan: '26/03/' + namVaoDoan, NoiVaoDoan: 'Chi đoàn ' + tenAp,
+          NgaySinhHoatDoan: 'Ngày 25 hằng tháng',
+          UyQuyenCho: '', UyQuyenDen: '', NgayThamGia: '01/01/2026',
+          DaXoa: false, NgayXoa: '', NguoiXoa: ''
+        });
+        added += 1;
+      }
+    });
+
+    db.randomMembersV1 = true;
+    return added;
+  }
+
   function seed() {
     var users = [
       ['CT_HOILHTN', 'Lê Văn Bình', 1, 'Chủ Tịch', '', '0901000006', '10/06/1982', 0, '', '26/03/2001', 'Chi đoàn Ấp Tân Xuân', 'Ngày 20 hằng tháng'],
@@ -279,6 +375,8 @@
         ChiTiet: 'Thông báo mẫu của hệ thống'
       }]
     };
+
+    ensureRandomMembers(db);
 
     users.filter(function (u) { return u.MaThe; }).forEach(function (u) {
       db.cards.push({
@@ -495,13 +593,19 @@
         u.NoiVaoDoan = 'Chi đoàn ' + apNameById[u.MaAp];
       }
     });
+    // Bổ sung đoàn viên ngẫu nhiên một lần cho dữ liệu cũ (mỗi Ấp đạt 5–15 người).
+    if (!db.randomMembersV1) ensureRandomMembers(db);
     return db;
   }
 
   function load() {
     try {
       var raw = localStorage.getItem(KEY);
-      if (raw) return migrate(JSON.parse(raw));
+      if (raw) {
+        var db = migrate(JSON.parse(raw));
+        save(db);
+        return db;
+      }
     } catch (e) { }
     var db = seed();
     save(db);
@@ -948,7 +1052,11 @@
     if (!/^0\d{9}$/.test(String(p.dienThoai))) throw new Error('Số điện thoại không hợp lệ (10 số, bắt đầu bằng 0).');
     var nums = db.users.map(function (x) { var m = String(x.MaDD).match(/^DV(\d+)$/); return m ? Number(m[1]) : 0; });
     var next = Math.max.apply(null, nums.concat([0])) + 1;
-    var maDD = 'DV' + ('0' + next).slice(-2);
+    var maDD = 'DV' + (next < 10 ? '0' + next : String(next));
+    while (find(db.users, 'MaDD', maDD)) {
+      next += 1;
+      maDD = 'DV' + (next < 10 ? '0' + next : String(next));
+    }
     var apMa = isAp(u) ? u.MaAp : String(p.maAp || '').trim().toUpperCase();
     if (!apMa) throw new Error('Vui lòng chọn Ấp cho đoàn viên mới.');
     var apObj = find(db.aps, 'MaAp', apMa);
